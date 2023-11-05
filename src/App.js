@@ -10,6 +10,9 @@ const Wrapper = styled(FlexWrapper)`
   overflow-x: hidden;
   align-items: center;
   white-space: pre-line;
+  --cardGap: min(8px, 2vw);
+  --size: calc((100vw - 2 * var(--screen_padding) - 2 * var(--cardGap)) / 3);
+  --cardSize: min(110px, var(--size));
 
   @media screen and (min-width: 640px) and (max-height: 800px) {
     --screen_padding: 18px;
@@ -33,8 +36,7 @@ const ComponentWrapper = styled(FlexWrapper)`
   background-size: cover;
 
   @media screen and (min-width: 640px) {
-    max-width: calc(56vh - 40px);
-    min-width: 375px;
+    max-width: 400px;
     border: 3px solid black;
     border-radius: 20px;
     margin: var(--screen_padding) 0;

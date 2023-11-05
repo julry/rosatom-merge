@@ -11,7 +11,7 @@ export const Wrapper = styled.button`
     color: ${({$type}) => TYPE_TO_COLOR[$type]};
     background: var(--main_${({bg}) => bg});
     width: min(74.4vw, 279px);
-    padding: min(20px, 5.3vw);
+    padding: min(15px, 4vw);
     border-radius: 30px;
     font-size: 16px;
     cursor: pointer;

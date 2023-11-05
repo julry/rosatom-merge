@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { rulesCards } from "../../constants";
 import { useProgress } from "../../hooks/useProgress";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
+import { CardsField } from "../shared/cards-field";
 import { ContentWrapper } from "../shared/content-wrapper";
 import { DarkenBg } from "../shared/darken-bg";
 import { Title, Text } from "../shared/texts";
@@ -20,6 +22,14 @@ const ElementStyled = styled.div`
     top: 10px;
     width: min(23vw, 88px); 
     height: min(15.2vw, 57px); 
+`;
+
+const CardsWrapperStyled = styled(CardsField)`
+    position: absolute;
+    z-index: 0;
+    bottom: min(79px, 21vw);
+    left: 50%;
+    transform: translateX(-50%);
 `;
 
 export const Screen2 = () => {
@@ -44,6 +54,7 @@ export const Screen2 = () => {
                     </ElementStyled>
                 </BlockStyled>
             </ContentWrapper>
+            <CardsWrapperStyled cards={rulesCards} />
             <DarkenBg />
         </>
     );

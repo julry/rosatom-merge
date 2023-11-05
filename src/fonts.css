@@ -1,17 +1,23 @@
-/* @font-face {
+@font-face {
     font-family: 'Rosatom';
-    src: local('Rosatom'),
-    url('./assets/fonts/Rosatom/Rosatom-light.otf') format('opentype'),
-    url('./assets/fonts/Rosatom/Rosatom-light.ttf') format('truetype');
+    src: local('Rosatom'), local('Rosatom'),
+    url('./assets/fonts/Rosatom/Rosatom-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Rosatom';
+    src: local('Rosatom'), local('Rosatom'),
+    url('./assets/fonts/Rosatom/Rosatom-Light.ttf') format('truetype');
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Rosatom';
-    src: local('Rosatom'),
-    url('./assets/fonts/Rosatom/Rosatom-bold.otf') format('opentype'),
-    url('./assets/fonts/Rosatom/Rosatom-bold.ttf') format('truetype');
-    font-weight: 700;
+    src: local('Rosatom'), local('Rosatom'),
+    url('./assets/fonts/Rosatom/Rosatom-Regular.ttf') format('truetype');
+    font-weight: 400;
     font-style: normal;
-} */
+}
