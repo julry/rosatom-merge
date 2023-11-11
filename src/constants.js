@@ -2,6 +2,7 @@ import water from './assets/images/water.png';
 import steam from './assets/images/steamMaker.png';
 import uranium from './assets/images/uranium.png';
 
+export const FIELD_SIZE = 3;
 export const rulesCards = [
     {
         id: 0,
@@ -39,4 +40,4 @@ export const rulesCards = [
         id: 8,
         src: uranium
     },
-]
+];

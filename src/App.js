@@ -4,6 +4,8 @@ import bg from './assets/images/bg.png';
 import { FlexWrapper } from './components/shared/flex-wrapper';
 import { ProgressProvider } from './context/ProgressContext';
 import { useProgressInit } from './hooks/useProgressInit';
+import {FIELD_SIZE} from './constants';
+
 
 const Wrapper = styled(FlexWrapper)`
   height: ${({height}) => height}px;
@@ -11,8 +13,8 @@ const Wrapper = styled(FlexWrapper)`
   align-items: center;
   white-space: pre-line;
   --cardGap: min(8px, 2vw);
-  --size: calc((100vw - 2 * var(--screen_padding) - 2 * var(--cardGap)) / 3);
-  --cardSize: min(110px, var(--size));
+  --size: calc((100vw - 2 * var(--screen_padding) - 2 * var(--cardGap)) / ${FIELD_SIZE});
+  --cardSize: min(${330 / FIELD_SIZE}px, var(--size));
 
   @media screen and (min-width: 640px) and (max-height: 800px) {
     --screen_padding: 18px;

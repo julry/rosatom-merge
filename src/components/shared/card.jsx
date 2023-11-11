@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { mergeRefs } from 'react-merge-refs';
+import { useDrag, useDrop } from 'react-dnd';
 import { 
     border0, border1, border2, 
     border3, border4, border5, 
@@ -51,8 +53,28 @@ const Border = styled.div`
     ${({$number}) => NUMBER_TO_POSITION[$number]};
 `;
 
-export const Card = ({ src, number }) => (
-    <Wrapper src={src}>
-        <Border $number={number} />
-    </Wrapper>
-);
+export const Card = ({ card, number, onDrop }) => {
+    const [, drag] = useDrag(() => ({
+        type: 'BLOCK',
+        item: () => ({...card, number}),
+        collect: monitor => ({
+            isDragging: monitor.isDragging(),
+        }),
+    }), [card]);
+
+    const [, drop] = useDrop(() => ({
+        accept: 'BLOCK',
+        collect: monitor => ({
+            hovered: monitor.canDrop() && monitor.isOver(),
+        }),
+        drop: (item) => {
+            onDrop(item, {...card, number});
+        }
+    }), [card])
+
+    return (
+        <Wrapper src={card?.src ?? ''} ref={mergeRefs([drag, drop])}>
+            <Border $number={number} />
+        </Wrapper>
+    )
+};
