@@ -1,7 +1,5 @@
-import { useCallback } from 'react';
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { shuffleArray } from '../../utils/shuffleArray';
 import { Block } from './block';
 import { CardsField } from './cards-field';
 import { ContentWrapper } from './content-wrapper';
@@ -76,16 +74,18 @@ const Cards = styled(CardsField)`
 const FIELD_SIZE = 3;
 
 export const MergeGame = (props) => {
-    const { cards } = props;
-    const [shownCards, setShownCards] = useState([]);
+    const { cards, onFinish } = props;
     const [finishedCards, setFinishedCards] = useState({});
-    const [appearedCards, setAppearedCards] = useState([]);
-    const [availableCards, setAvailableCards] = useState([])
+    const [playingCards, setPlayingCards] = useState({
+        shownCards: [],
+        appearedCards: [],
+        availableCards: []
+    })
 
     const firstLvlCards = useMemo(() => cards.filter(card => card.lvl === 1), [cards]); 
 
     useEffect(() => {
-        if (shownCards.length) return;
+        if (playingCards.shownCards.length) return;
         
         const initialShown = [];
         const field = Array.from({length: FIELD_SIZE * FIELD_SIZE});
@@ -96,70 +96,75 @@ export const MergeGame = (props) => {
             initialShown.push({...newCard, id: newCard.id + i});
         }
 
-        setShownCards(initialShown);
-        setAppearedCards(initialShown);
-        setAvailableCards(firstLvlCards);
-    }, [cards, shownCards.length, firstLvlCards]);
+        setPlayingCards({shownCards: initialShown, appearedCards: initialShown, availableCards: firstLvlCards});
+    }, [cards, playingCards, firstLvlCards]);
 
-    // const getShownSame = useCallback(() => {
+    const handleAppearNew = (index) => {
+        setPlayingCards((prev) => {
+            const {availableCards, shownCards, appearedCards} = prev;
+            const newShown = [...shownCards];
+            const newAppeared = [...appearedCards];
+            let newAvailable = [...availableCards];
+            if (!availableCards.length) return prev;
 
-    // })
-    const handleAppearNew = useCallback((index) => {
-        if (!availableCards.length) return;
-        let randomIndex = Math.floor(Math.random() * availableCards.length);
-        let newCard = availableCards[randomIndex];
-        const isHasCardLvl1 = !!availableCards.filter(({type}) => shownCards.find(card => card?.type === type)).length;
-        let isShownSame = shownCards.find(card => card?.type === newCard.type && card.lvl === 1);
-        if (isHasCardLvl1 && !isShownSame) {
-            while (!isShownSame) {
-                randomIndex = randomIndex + 1 > availableCards.length - 1 ? 0 : randomIndex + 1;
-                //TODO: рандомить дальше, если таких же карт нет на столе
+            let randomIndex = Math.floor(Math.random() * availableCards.length);
+            let newCard = availableCards[randomIndex];
+           
+            newShown[index] = newCard;
+            newAppeared.push(newCard);
+            if (newAppeared.filter(card => newCard.type === card?.type).length >= newCard.max) {
+                newAvailable = availableCards.filter(({type}) => type !== newCard.type);
             }
-        }
-        if (!isHasCardLvl1 || isShownSame) {
-            setShownCards(prev => {
-                const newShown = [...prev];
-                newShown[index] = newCard;
-                return newShown;
-            });
-            setAppearedCards(prev => [...prev, newCard]);
-            if (appearedCards.filter(card => newCard.type === card?.type).length >= newCard.max) {
-                setAvailableCards(prev => prev.filter(({type}) => type !== newCard.type));
-            }
-        }           
-    }, [shownCards, setShownCards, availableCards, appearedCards, setAppearedCards, setAvailableCards]);
+            
+            return {...prev, shownCards: newShown, appearedCards: newAppeared, availableCards: newAvailable};
+        });
+        // console.log('isShownSame', isShownSame);
+        // if (!isHasCardLvl1) {
+            // console.log('water', $appearedCards.current.filter(card => card?.type === 'water').length)
+            //     console.log('uranium', $appearedCards.current.filter(card => card?.type === 'uranium').length)
+            //     console.log('rotor', $appearedCards.current.filter(card => card?.type === 'rotor').length)
+            //     console.log('"coil"', $appearedCards.current.filter(card => card?.type === "coil").length);
+            //     console.log('newCard.max', newCard.max);
+            //     console.log('newCard.type', newCard.type);
+        // }           
+    };
 
-    const handleCompleteCard = useCallback((id, number) => {
-        setShownCards(prev => {
-            const newShown = [...prev];
+    const handleCompleteCard =  (id, number) => {
+        setPlayingCards((prev) => {
+            const newShown = [...prev.shownCards];
             newShown[number] = null;
-            return newShown
+            return {...prev, shownCards: newShown};
         });
         
-        setFinishedCards(prev =>({...prev, [id]: (prev.id ?? 0) + 1}));
+        setFinishedCards(prev =>({...prev, [id]: (prev[id] ?? 0) + 1}));
 
         setTimeout(() => handleAppearNew(number), 200);
-    }, [setShownCards, handleAppearNew]);
+    };
 
-    const handleMerge = useCallback((dragged, dropped) => {
+    const handleMerge = (dragged, dropped) => {
         const {number: draggedNumber, type: draggedType, lvl: draggedLvl} = dragged;
         const {number: droppedNumber, type: droppedType, lvl: droppedLvl} = dropped;
         if (draggedType !== droppedType || droppedLvl !== draggedLvl) return;
         const merged = cards.find(({type, lvl}) => type === draggedType && lvl === draggedLvl + 1);
-        setShownCards(prev => {
-            const newShown = [...prev];
+       
+        setPlayingCards((prev) => {
+            const newShown = [...prev.shownCards];
             newShown[draggedNumber] = null;
             newShown[droppedNumber] = merged;
-            return newShown
+            return {...prev, shownCards: newShown};
         });
-        
+
         if (merged.isLast) setTimeout(() => handleCompleteCard(merged.id, dropped.number), 200);
-    }, [setShownCards, cards, handleCompleteCard]);
+    };
 
     const handleDrop = (dragged, dropped) => {
         handleMerge(dragged, dropped);
         setTimeout(() => handleAppearNew(dragged?.number), 200);
     };
+
+    useEffect(() => {
+        if (!playingCards.shownCards.filter(item => item !== null).length && !!playingCards.appearedCards.length) onFinish();
+    }, [playingCards, onFinish]);
 
     return (
         <>
@@ -175,11 +180,11 @@ export const MergeGame = (props) => {
                         <ResultCard key={result.id}>
                             <ResultImg src={result.src} />
                             <ResultAmount>{finishedCards[result.id] ?? 0}/{result.amount}</ResultAmount>
-                            <ResultText>{result.text}</ResultText>
+                            <ResultText>{result.id}</ResultText>
                         </ResultCard>
                     ))}
                 </ResultWrapper>
-                <Cards cards={shownCards} onDrop={handleDrop}/>
+                <Cards cards={playingCards.shownCards} onDrop={handleDrop}/>
             </Wrapper>
             {props.isShownDarken && <DarkenBg />}
         </>

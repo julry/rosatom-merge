@@ -1,22 +1,32 @@
 {
   "files": {
     "main.css": "./static/css/main.4b10efad.css",
-    "main.js": "./static/js/main.e5c9667d.js",
+    "main.js": "./static/js/main.a3d86929.js",
     "static/media/bg.png": "./static/media/bg.49f3b720813956021419.png",
     "static/media/game2Bg.png": "./static/media/game2Bg.afea1423d30ba99e89b9.png",
     "static/media/Rosatom-Light.ttf": "./static/media/Rosatom-Light.29b0a57f02b2112f2cd5.ttf",
     "static/media/Rosatom-Regular.ttf": "./static/media/Rosatom-Regular.05ccb6ce475bc89de1e7.ttf",
     "static/media/Rosatom-Bold.ttf": "./static/media/Rosatom-Bold.f9d1a4ec532f17bb612f.ttf",
+    "static/media/ice-full.png": "./static/media/ice-full.568dcade414ee7c5bcb7.png",
+    "static/media/ice-broken.png": "./static/media/ice-broken.371f1092f27be1f34ed4.png",
     "static/media/medal.png": "./static/media/medal.acacbf6acf48458674ce.png",
     "static/media/turboGen.png": "./static/media/turboGen.cee00fbb1968cf6d03a7.png",
+    "static/media/cod.png": "./static/media/cod.464a2dac82b326431c30.png",
     "static/media/water.png": "./static/media/water.610e3a30162c120b5d13.png",
+    "static/media/medicine.png": "./static/media/medicine.649b0bcebe0451c6ca32.png",
     "static/media/coil.png": "./static/media/coil.8578386c30eec6fc071b.png",
+    "static/media/homeBuilding.png": "./static/media/homeBuilding.69c9dd894aee3e017057.png",
     "static/media/transformer.png": "./static/media/transformer.589f6df5a53ba61df15e.png",
     "static/media/reactBuild.png": "./static/media/reactBuild.2da8df06aaa052973df1.png",
+    "static/media/board.png": "./static/media/board.c6e3dc72de30ae795eaa.png",
     "static/media/uranium.png": "./static/media/uranium.7ad4c459dd24ee6a6526.png",
+    "static/media/apeu.png": "./static/media/apeu.19d036bb22c3aa5d40d6.png",
+    "static/media/icebreaker.png": "./static/media/icebreaker.15c24affc0c67c8f17dc.png",
+    "static/media/table.png": "./static/media/table.4d4a21c75a4ad5632183.png",
     "static/media/warmer.png": "./static/media/warmer.0b0060b1ebfadbfae90e.png",
     "static/media/rotor.png": "./static/media/rotor.eccbd8b390d4ce3f050f.png",
     "static/media/reactor.png": "./static/media/reactor.3edcac06996afa0257d6.png",
+    "static/media/ice.png": "./static/media/ice.2aaa9955413ec44c65af.png",
     "static/media/turbine.png": "./static/media/turbine.653029800cf6a2c2dca2.png",
     "static/media/tvel.png": "./static/media/tvel.50c00ee086eafcf9265b.png",
     "static/media/steamMaker.png": "./static/media/steamMaker.c852cd488511ec936335.png",
@@ -33,10 +43,10 @@
     "static/media/start-button-icon.svg": "./static/media/start-button-icon.30441cceb1cb5b73742b53dacf38d180.svg",
     "index.html": "./index.html",
     "main.4b10efad.css.map": "./static/css/main.4b10efad.css.map",
-    "main.e5c9667d.js.map": "./static/js/main.e5c9667d.js.map"
+    "main.a3d86929.js.map": "./static/js/main.a3d86929.js.map"
   },
   "entrypoints": [
     "static/css/main.4b10efad.css",
-    "static/js/main.e5c9667d.js"
+    "static/js/main.a3d86929.js"
   ]
 }

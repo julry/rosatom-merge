@@ -6,10 +6,6 @@ export const Title = styled.h2`
     margin-bottom: min(2vw, 8px);
     text-transform: uppercase;
 
-    @media screen and (max-width: 320px) {
-        font-size: 18px;
-    }
-
     @media screen and (min-width: 400px) {
         font-size: 22px;
     }
@@ -21,6 +17,10 @@ export const Title = styled.h2`
     @media screen and (max-height: 600px) {
         font-size: 18px;
     }
+
+    @media screen and (max-width: 320px) {
+        font-size: 16px;
+    }
 `;
 
 export const Text = styled.p`
@@ -28,10 +28,10 @@ export const Text = styled.p`
     font-size: 16px;
 
     @media screen and (max-width: 320px) {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     @media screen and (max-height: 600px) {
-        font-size: 14px;
+        font-size: 13px;
     }
 `;

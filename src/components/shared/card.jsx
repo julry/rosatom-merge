@@ -68,6 +68,7 @@ export const Card = ({ card, number, onDrop }) => {
             hovered: monitor.canDrop() && monitor.isOver(),
         }),
         drop: (item) => {
+            if (number === item.number) return;
             onDrop(item, {...card, number});
         }
     }), [card])

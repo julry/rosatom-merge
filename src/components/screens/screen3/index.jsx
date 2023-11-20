@@ -16,7 +16,7 @@ export const Screen3 = () => {
     
     return (
         <>
-        <MergeGame cards={cards} results={results} isShownBlock isShownDarken={!isFinished}/>
+        <MergeGame cards={cards} results={results} isShownBlock isShownDarken={!isFinished} onFinish={() => setIsFinished(true)}/>
         {isFinished && (<FinishedWrapper>
             <Block>
                 <Title>Чего-то не хватает!</Title>
