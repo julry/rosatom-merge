@@ -88,16 +88,24 @@ export const MergeGame = (props) => {
         if (playingCards.shownCards.length) return;
         
         const initialShown = [];
+        let available = [...firstLvlCards];
+
         const field = Array.from({length: FIELD_SIZE * FIELD_SIZE});
-        
-        for (let i=0; i < field.length; i++) {
+
+        for (let i = 0; i < field.length; i++) {
             const newCard = firstLvlCards[Math.floor(Math.random() * firstLvlCards.length)];
-            if (initialShown.filter((card) => card.type === newCard.type).length >= newCard.max) return;
-            initialShown.push({...newCard, id: newCard.id + i});
+            if (initialShown.filter((card) => card.type === newCard.type).length >= newCard.max) {
+                i = i - 1;
+            } else {
+                initialShown.push({...newCard, id: newCard.id + i});
+                if (initialShown.filter((card) => card.type === newCard.type).length >= newCard.max) {
+                    available = available.filter((card) => card.type !== newCard.type);
+                }
+            }
         }
 
-        setPlayingCards({shownCards: initialShown, appearedCards: initialShown, availableCards: firstLvlCards});
-    }, [cards, playingCards, firstLvlCards]);
+        setPlayingCards({shownCards: initialShown, appearedCards: initialShown, availableCards: available});
+    }, [firstLvlCards, playingCards.shownCards.length]);
 
     const handleAppearNew = (index) => {
         setPlayingCards((prev) => {
@@ -131,7 +139,7 @@ export const MergeGame = (props) => {
         
         setFinishedCards(prev =>({...prev, [id]: (prev[id] ?? 0) + 1}));
 
-        handleAppearNew(number);
+        setTimeout(() => handleAppearNew(number), 0);
     };
 
     const handleMerge = (dragged, dropped) => {
@@ -154,7 +162,7 @@ export const MergeGame = (props) => {
 
     const handleDrop = (dragged, dropped) => {
         const wasMerged = handleMerge(dragged, dropped);
-        if (wasMerged) handleAppearNew(dragged?.number);
+        if (wasMerged) setTimeout(() => handleAppearNew(dragged?.number), 0);
     };
 
     useEffect(() => {
