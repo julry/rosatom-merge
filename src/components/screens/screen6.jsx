@@ -5,7 +5,6 @@ import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
 import { DarkenBg } from "../shared/darken-bg";
-import { FlexWrapper } from "../shared/flex-wrapper";
 import { Title, Text } from "../shared/texts";
 
 const BlockStyled = styled(Block)`

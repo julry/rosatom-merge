@@ -106,9 +106,8 @@ export const MergeGame = (props) => {
             const newAppeared = [...appearedCards];
             let newAvailable = [...availableCards];
             if (!availableCards.length) return prev;
-            const shownFirst = shownCards.filter(card => card?.lvl === 1 && availableCards.includes(({type}) => type === card.type));
+            const shownFirst = shownCards.filter(card => card?.lvl === 1 && availableCards.find(({type}) => type === card.type));
            
-
             const pickFrom = shownFirst.length < availableCards.length && shownFirst.length > 0 ? shownFirst : availableCards;
             let randomIndex = Math.floor(Math.random() * pickFrom.length);
             let newCard = pickFrom[randomIndex];

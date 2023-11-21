@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { DragPreviewImage, useDrag } from "react-dnd";
+import { useDrag } from "react-dnd";
 import { usePreview } from "react-dnd-multi-backend";
 import { useEffect } from "react";
 
@@ -14,11 +14,7 @@ const Wrapper = styled.div`
 const PreviewStyled = styled(Wrapper)`
     width: calc(var(--cardSize) * 0.8);
     height: calc(var(--cardSize) * 0.8);
-`;
-
-const DragPreviewImageStyled = styled(DragPreviewImage)`
-    width: 60px;
-    height: 60px;
+    z-index: 20;
 `;
 
 export const Object = ({className, object, canDrag}) => {

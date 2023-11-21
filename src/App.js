@@ -5,6 +5,7 @@ import { FlexWrapper } from './components/shared/flex-wrapper';
 import { ProgressProvider } from './context/ProgressContext';
 import { useProgressInit } from './hooks/useProgressInit';
 import {FIELD_SIZE} from './constants';
+import { preloadImage } from './utils/preloadImage';
 
 
 const Wrapper = styled(FlexWrapper)`
@@ -67,6 +68,14 @@ function App() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+
+  useEffect(() => {
+    let preloadImages = screen?.preloadImages;
+    const clears = preloadImages && preloadImages.map(img => preloadImage(img));
+    return () => clears && clears.forEach(clear => clear());
+  }, [screen]);
+
 
   return (
       <ProgressProvider value={progress}>
