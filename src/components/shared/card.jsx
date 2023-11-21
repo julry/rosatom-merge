@@ -117,7 +117,7 @@ export const Card = ({ card, number, onDrop }) => {
 
 
     return (
-        <Wrapper src={card?.src ?? ''} ref={mergeRefs([drag, drop])}>
+        <Wrapper src={card?.src ?? ''} ref={mergeRefs([card?.src ? drag : null, drop])}>
             <Border $number={number} />
             {/* {hovered && <MergingImg />} */}
         </Wrapper>
