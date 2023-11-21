@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { mergeRefs } from 'react-merge-refs';
 import { useDrag, useDrop } from 'react-dnd';
+import merging from '../../assets/images/merging.svg';
 import { 
     border0, border1, border2, 
     border3, border4, border5, 
     border6, border7, border8
 } from '../../assets/images/borders';
+import { usePreview } from 'react-dnd-multi-backend';
 
 const NUMBER_TO_BORDER = { 
     0: border0,
@@ -53,8 +55,22 @@ const Border = styled.div`
     ${({$number}) => NUMBER_TO_POSITION[$number]};
 `;
 
+const MergingImg = styled.div`
+    position: absolute;
+    left: -50%;
+    top: -50%;
+    width: calc(100% * 211 / 110);
+    height: calc(100% * 176 / 110);
+    background: url(${merging});
+    background-size: contain;
+`;
+
+const StyledPreview = styled(Wrapper)`
+    opacity: 0.5;
+`;
+
 export const Card = ({ card, number, onDrop }) => {
-    const [, drag] = useDrag(() => ({
+    const [{ isDragging }, drag] = useDrag(() => ({
         type: 'BLOCK',
         item: () => ({...card, number}),
         collect: monitor => ({
@@ -62,20 +78,48 @@ export const Card = ({ card, number, onDrop }) => {
         }),
     }), [card]);
 
-    const [, drop] = useDrop(() => ({
+    const [{ hovered }, drop] = useDrop(() => ({
         accept: 'BLOCK',
         collect: monitor => ({
-            hovered: monitor.canDrop() && monitor.isOver(),
+            hovered: monitor.canDrop() && monitor.isOver() 
+                && monitor.getItem()?.number !== number && monitor.getItem()?.type === card?.type,
         }),
         drop: (item) => {
             if (number === item.number) return;
             onDrop(item, {...card, number});
-        }
+        },
     }), [card])
+
+    const CardPreview = (props) => {
+        const {display, style} = usePreview();
+
+        if (!display) {
+            return null;
+        }
+
+        return (
+            <StyledPreview style={style} src={card?.src ?? ''}>
+                <Border $number={number} />
+            </StyledPreview>
+        );
+    };
+
+    if (isDragging) {
+        return (
+        <>
+            <div style={{width: 'var(--cardSize)'}}>
+            
+            </div>
+            <CardPreview />
+        </>
+    )
+    }
+
 
     return (
         <Wrapper src={card?.src ?? ''} ref={mergeRefs([drag, drop])}>
             <Border $number={number} />
+            {/* {hovered && <MergingImg />} */}
         </Wrapper>
     )
 };

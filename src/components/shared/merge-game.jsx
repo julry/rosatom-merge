@@ -106,27 +106,21 @@ export const MergeGame = (props) => {
             const newAppeared = [...appearedCards];
             let newAvailable = [...availableCards];
             if (!availableCards.length) return prev;
+            const shownFirst = shownCards.filter(card => card?.lvl === 1 && availableCards.includes(({type}) => type === card.type));
+           
 
-            let randomIndex = Math.floor(Math.random() * availableCards.length);
-            let newCard = availableCards[randomIndex];
+            const pickFrom = shownFirst.length < availableCards.length && shownFirst.length > 0 ? shownFirst : availableCards;
+            let randomIndex = Math.floor(Math.random() * pickFrom.length);
+            let newCard = pickFrom[randomIndex];
            
             newShown[index] = newCard;
             newAppeared.push(newCard);
-            if (newAppeared.filter(card => newCard.type === card?.type).length >= newCard.max) {
+            if (newAppeared.filter(card => newCard?.type === card?.type).length >= newCard.max) {
                 newAvailable = availableCards.filter(({type}) => type !== newCard.type);
             }
             
             return {...prev, shownCards: newShown, appearedCards: newAppeared, availableCards: newAvailable};
         });
-        // console.log('isShownSame', isShownSame);
-        // if (!isHasCardLvl1) {
-            // console.log('water', $appearedCards.current.filter(card => card?.type === 'water').length)
-            //     console.log('uranium', $appearedCards.current.filter(card => card?.type === 'uranium').length)
-            //     console.log('rotor', $appearedCards.current.filter(card => card?.type === 'rotor').length)
-            //     console.log('"coil"', $appearedCards.current.filter(card => card?.type === "coil").length);
-            //     console.log('newCard.max', newCard.max);
-            //     console.log('newCard.type', newCard.type);
-        // }           
     };
 
     const handleCompleteCard =  (id, number) => {
@@ -138,7 +132,7 @@ export const MergeGame = (props) => {
         
         setFinishedCards(prev =>({...prev, [id]: (prev[id] ?? 0) + 1}));
 
-        setTimeout(() => handleAppearNew(number), 200);
+        handleAppearNew(number);
     };
 
     const handleMerge = (dragged, dropped) => {
@@ -154,12 +148,14 @@ export const MergeGame = (props) => {
             return {...prev, shownCards: newShown};
         });
 
-        if (merged.isLast) setTimeout(() => handleCompleteCard(merged.id, dropped.number), 200);
+        if (merged.isLast) setTimeout(() => handleCompleteCard(merged.id, dropped.number), 600);
+
+        return true;
     };
 
     const handleDrop = (dragged, dropped) => {
-        handleMerge(dragged, dropped);
-        setTimeout(() => handleAppearNew(dragged?.number), 200);
+        const wasMerged = handleMerge(dragged, dropped);
+        if (wasMerged) handleAppearNew(dragged?.number);
     };
 
     useEffect(() => {
@@ -180,7 +176,7 @@ export const MergeGame = (props) => {
                         <ResultCard key={result.id}>
                             <ResultImg src={result.src} />
                             <ResultAmount>{finishedCards[result.id] ?? 0}/{result.amount}</ResultAmount>
-                            <ResultText>{result.id}</ResultText>
+                            <ResultText>{result.text}</ResultText>
                         </ResultCard>
                     ))}
                 </ResultWrapper>

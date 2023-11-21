@@ -1,9 +1,10 @@
 {
   "files": {
     "main.css": "./static/css/main.4b10efad.css",
-    "main.js": "./static/js/main.a3d86929.js",
+    "main.js": "./static/js/main.42e22ce8.js",
     "static/media/bg.png": "./static/media/bg.49f3b720813956021419.png",
     "static/media/game2Bg.png": "./static/media/game2Bg.afea1423d30ba99e89b9.png",
+    "static/media/merging.svg": "./static/media/merging.2ab628969fe5aaf99318c0857fac6bdb.svg",
     "static/media/Rosatom-Light.ttf": "./static/media/Rosatom-Light.29b0a57f02b2112f2cd5.ttf",
     "static/media/Rosatom-Regular.ttf": "./static/media/Rosatom-Regular.05ccb6ce475bc89de1e7.ttf",
     "static/media/Rosatom-Bold.ttf": "./static/media/Rosatom-Bold.f9d1a4ec532f17bb612f.ttf",
@@ -43,10 +44,10 @@
     "static/media/start-button-icon.svg": "./static/media/start-button-icon.30441cceb1cb5b73742b53dacf38d180.svg",
     "index.html": "./index.html",
     "main.4b10efad.css.map": "./static/css/main.4b10efad.css.map",
-    "main.a3d86929.js.map": "./static/js/main.a3d86929.js.map"
+    "main.42e22ce8.js.map": "./static/js/main.42e22ce8.js.map"
   },
   "entrypoints": [
     "static/css/main.4b10efad.css",
-    "static/js/main.a3d86929.js"
+    "static/js/main.42e22ce8.js"
   ]
 }
