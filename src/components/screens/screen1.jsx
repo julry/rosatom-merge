@@ -36,7 +36,7 @@ export const Screen1 = () => {
                     </Text>
                 </BlockStyled>
                 <ButtonWrapper>
-                    <Button type="light" bg="green" onClick={next}>Давай</Button>
+                    <Button type="light" bg="green" onClick={next}>Вперёд</Button>
                 </ButtonWrapper>
             </ContentWrapper>
             <DarkenBg />

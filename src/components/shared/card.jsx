@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { mergeRefs } from 'react-merge-refs';
 import { useDrag, useDrop } from 'react-dnd';
-import merging from '../../assets/images/merging.svg';
 import { 
     border0, border1, border2, 
     border3, border4, border5, 
@@ -55,16 +54,6 @@ const Border = styled.div`
     ${({$number}) => NUMBER_TO_POSITION[$number]};
 `;
 
-const MergingImg = styled.div`
-    position: absolute;
-    left: -50%;
-    top: -50%;
-    width: calc(100% * 211 / 110);
-    height: calc(100% * 176 / 110);
-    background: url(${merging});
-    background-size: contain;
-`;
-
 const StyledPreview = styled(Wrapper)`
     opacity: 0.5;
 `;
@@ -78,7 +67,7 @@ export const Card = ({ card, number, onDrop }) => {
         }),
     }), [card]);
 
-    const [{ hovered }, drop] = useDrop(() => ({
+    const [, drop] = useDrop(() => ({
         accept: 'BLOCK',
         collect: monitor => ({
             hovered: monitor.canDrop() && monitor.isOver() 

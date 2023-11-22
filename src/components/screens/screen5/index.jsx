@@ -124,7 +124,11 @@ export const Screen5 = () => {
 
     const correctText = 'Ура! У тебя получилось освоить территорию и построить ' + 
     'на ней целый комплекс необходимых объектов Росатома — АЭС, ЦОД и медицинский центр. Теперь все работает слажено!';
-    const rulesText = 'Расположи объекты в правильной комбинации — сбоку подсказки!';
+    const rulesText = () => ( 
+        <>
+            <b>Перетаскивай</b> объекты из верхней части <b>на поле</b>. Расположи всё в правильной комбинации — <b>сбоку подсказки</b>!
+        </>
+    );
 
     const [additional, setAdditional] = useState({
         type: 'info', 
@@ -237,6 +241,30 @@ export const Screen5 = () => {
         else handleCheck();
     };
 
+    const handleDelete = (row, col) => {
+        console.log(row, col);
+        setShown(prev => {
+            const items = prev.filter(prevItem => !(prevItem.row === row && col === prevItem.col));
+
+            setResults(prevResults => {
+                const newResults = {...prevResults};
+
+                newResults.row[row] = {
+                    ...newResults.row[row], 
+                    amount: items.filter((filtered) => filtered.row === row && filtered.type === newResults.row[row].type).length
+                };
+                newResults.column[col] = {
+                    ...newResults.column[col], 
+                    amount: items.filter((filtered) => filtered.col === col && filtered.type === newResults.column[col].type).length
+                };
+
+                return newResults;
+            })
+
+            return items;
+        })
+    };
+
     return (
         <DndProvider options={HTML5toTouch}>
             <Wrapper>
@@ -253,6 +281,7 @@ export const Screen5 = () => {
                     wrongCols={wrongCols} 
                     wrongRows={wrongRows}
                     isBreaking={isBreaking}
+                    onDelete={handleDelete}
                 />
                 <ButtonStyled 
                     bg="blue" 
@@ -266,7 +295,9 @@ export const Screen5 = () => {
                 <AdditionalWrapper>
                     {additional.type === 'info' ? (
                         <Block color='var(--main_green)'>
-                            <Text>{additional.text}</Text>
+                            <Text>
+                                {typeof additional.text === 'function' ? additional.text() : additional.text}
+                            </Text>
                         </Block>
                     ) : (
                         <Block>

@@ -42,7 +42,7 @@ export const Screen4 = () => {
                             'Немного передохнули… продолжим строить?'
                         }
                     </Text>
-                    <ButtonStyled type="dark" bg="red" onClick={handleNext}>Конечно</ButtonStyled>
+                    <ButtonStyled type="dark" bg="red" onClick={handleNext}>Продолжить</ButtonStyled>
                     <Text>
                         {
                             'В конце стройки ты сможешь узнать все про стройотряды Росатома, ' + 

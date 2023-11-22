@@ -148,7 +148,7 @@ const WrongColumn = styled(Wrong)`
     border-bottom: ${({$hasLastRow}) => $hasLastRow ? 'none' : 'var(--wrongBorder)'};
 `;
 
-export const Board = ({ onDrop, wrongCols, wrongRows, shown, results, isIce, isBreaking }) => {
+export const Board = ({ onDrop, wrongCols, wrongRows, shown, results, isIce, isBreaking, onDelete }) => {
     const rowCells = Array.from({length: ROW_SIZE}, (_, i) => i);
     const colCells = Array.from({length: COLUMN_SIZE}, (_, i) => i);
 
@@ -186,7 +186,7 @@ export const Board = ({ onDrop, wrongCols, wrongRows, shown, results, isIce, isB
                                             wrongRow={wrongRows.includes(r)}
                                         >
                                             {!!shown?.find(({row, col}) => row === r && col === c) && (
-                                                <Object object={{...shown.find(({row, col}) => row === r && col === c)}} />
+                                                <Object object={{...shown.find(({row, col}) => row === r && col === c)}} onDelete={onDelete} />
                                             )}
                                         </ObjectPlace>
                                     ))}

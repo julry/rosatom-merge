@@ -174,7 +174,7 @@ export const MergeGame = (props) => {
             <Wrapper>
                 <BlockStyled $isShown={props.isShownBlock} color="var(--main_green)">
                     <Text>
-                        Соединяй одинаковые объекты, {'\n'}чтобы получить все части АЭС.{'\n'}
+                        <b>Выбирай</b> и <b>соединяй пары</b> объектов на поле, чтобы получить все части АЭС.{'\n'}
                         В итоге ты должен собрать:
                     </Text>
                 </BlockStyled>
