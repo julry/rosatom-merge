@@ -117,24 +117,24 @@ export const cards = [
 
 export const results = [
     {
-        id: 'cooling',
+        id: 'result_cooling',
         src: cooling,
         text: 'Градильня',
         amount: 2,
     }, {
-        id: 'turboGen',
+        id: 'result_turboGen',
         src: turboGen,
         text: 'Турбогенератор',
         amount: 2,
     },
     {
-        id: 'reactBuild',
+        id: 'result_reactBuild',
         src: reactBuild,
         text: 'Здание реактора',
         amount: 2,
     },
     {
-        id: 'transformer',
+        id: 'result_transformer',
         src: transformer,
         text: 'Трансформатор',
         amount: 2,

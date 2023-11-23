@@ -21,6 +21,10 @@ const ButtonStyled = styled(Button)`
     }
 `;
 
+const BlockStyled = styled(Block)`
+    margin-top: min(80px, 21vw);
+`;
+
 export const Screen4 = () => {
     const { next } = useProgress();
     const [isFinished, setIsFinished] = useState(false);
@@ -33,7 +37,7 @@ export const Screen4 = () => {
         <>
             <MergeGame cards={cards} results={results} isShownDarken={!isFinished} onFinish={() => setIsFinished(true)} />
             {isFinished && (<FinishedWrapper>
-                <Block>
+                <BlockStyled>
                     <Title>Полпути пройдено!</Title>
                     <Text>
                         {
@@ -50,7 +54,7 @@ export const Screen4 = () => {
                         }
                     </Text>
                     <ButtonStyled type="light" bg="green">В стройотряд</ButtonStyled>
-                </Block>
+                </BlockStyled>
             </FinishedWrapper>)}
         </>
     );

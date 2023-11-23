@@ -7,7 +7,6 @@ import { useProgressInit } from './hooks/useProgressInit';
 import {FIELD_SIZE} from './constants';
 import { preloadImage } from './utils/preloadImage';
 
-
 const Wrapper = styled(FlexWrapper)`
   height: ${({height}) => height}px;
   overflow-x: hidden;

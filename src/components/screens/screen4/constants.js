@@ -96,24 +96,24 @@ export const cards = [
 
 export const results = [
     {
-        id: 'cod',
+        id: 'result_cod',
         src: cod,
         text: 'ЦОД',
         amount: 1,
     }, {
-        id: 'medicine',
+        id: 'result_medicine',
         src: medicine,
         text: 'Мед.центр',
         amount: 1,
     },
     {
-        id: 'home',
+        id: 'result_home',
         src: home,
         text: 'Жилой корпус',
         amount: 2,
     },
     {
-        id: 'icebreaker',
+        id: 'result_icebreaker',
         src: icebreaker,
         text: 'Ледокол',
         amount: 1,

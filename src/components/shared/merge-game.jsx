@@ -1,18 +1,19 @@
+import gsap from 'gsap';
 import {useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { COMPLETE_ANIMATION_DURATION, MERGE_ANIMATION_DURATION } from '../../constants';
 import { Block } from './block';
+import { Button } from './button';
 import { CardsField } from './cards-field';
 import { ContentWrapper } from './content-wrapper';
 import { DarkenBg } from './darken-bg';
 import { FlexWrapper } from './flex-wrapper';
-import { Text } from './texts';
+import { Modal } from './modal';
+import { RulesHeader } from './rules-header';
+import {Rules1} from './rules1';
 
 const Wrapper = styled(ContentWrapper)`
     padding-top: var(--screen_padding);
-`;
-
-const BlockStyled = styled(Block)`
-    opacity: ${({$isShown}) => $isShown ? 1 : 0};
 `;
 
 const ResultWrapper = styled.div`
@@ -75,6 +76,7 @@ const FIELD_SIZE = 3;
 
 export const MergeGame = (props) => {
     const { cards, onFinish } = props;
+    const [isRules, setIsRules] = useState(false);
     const [finishedCards, setFinishedCards] = useState({});
     const [playingCards, setPlayingCards] = useState({
         shownCards: [],
@@ -136,8 +138,13 @@ export const MergeGame = (props) => {
             newShown[number] = null;
             return {...prev, shownCards: newShown};
         });
-        
-        setFinishedCards(prev =>({...prev, [id]: (prev[id] ?? 0) + 1}));
+        setFinishedCards(prev =>({...prev, [`result_${id}`]: (prev[`result_${id}`] ?? 0) + 1}));
+        gsap.to(`#result_${id}`, {
+            scale: 1.2,
+            duration: COMPLETE_ANIMATION_DURATION / 1000,
+            repeat: 1,
+            yoyo: true
+        });
 
         setTimeout(() => handleAppearNew(number), 0);
     };
@@ -151,11 +158,22 @@ export const MergeGame = (props) => {
         setPlayingCards((prev) => {
             const newShown = [...prev.shownCards];
             newShown[draggedNumber] = null;
-            newShown[droppedNumber] = merged;
+            newShown[droppedNumber] = {...merged, isNew: true};
             return {...prev, shownCards: newShown};
         });
 
-        if (merged.isLast) setTimeout(() => handleCompleteCard(merged.id, dropped.number), 600);
+        setTimeout(() => {
+            setPlayingCards((prev) => {
+                const newShown = [...prev.shownCards];
+                newShown[droppedNumber] = {...newShown[droppedNumber], isNew: false};
+                return {...prev, shownCards: newShown};
+            });
+        }, MERGE_ANIMATION_DURATION);
+
+        if (merged.isLast) setTimeout(
+            () => handleCompleteCard(merged.id, dropped.number), 
+            MERGE_ANIMATION_DURATION + COMPLETE_ANIMATION_DURATION
+        );
 
         return true;
     };
@@ -172,15 +190,10 @@ export const MergeGame = (props) => {
     return (
         <>
             <Wrapper>
-                <BlockStyled $isShown={props.isShownBlock} color="var(--main_green)">
-                    <Text>
-                        <b>Выбирай</b> и <b>соединяй пары</b> объектов на поле, чтобы получить все части АЭС.{'\n'}
-                        В итоге ты должен собрать:
-                    </Text>
-                </BlockStyled>
+                <RulesHeader onClick={() => setIsRules(true)} />
                 <ResultWrapper>
                     {props.results?.map((result) => (
-                        <ResultCard key={result.id}>
+                        <ResultCard key={result.id} id={result.id}>
                             <ResultImg src={result.src} />
                             <ResultAmount>{finishedCards[result.id] ?? 0}/{result.amount}</ResultAmount>
                             <ResultText>{result.text}</ResultText>
@@ -189,7 +202,12 @@ export const MergeGame = (props) => {
                 </ResultWrapper>
                 <Cards cards={playingCards.shownCards} onDrop={handleDrop}/>
             </Wrapper>
-            {props.isShownDarken && <DarkenBg />}
+            {(props.isShownDarken && !isRules) && <DarkenBg />}
+            {isRules && (
+                <Modal>
+                    <Rules1 onClick={() => setIsRules(false)} />
+                </Modal>
+            )}
         </>
     );
 };

@@ -7,6 +7,10 @@ import {
     border6, border7, border8
 } from '../../assets/images/borders';
 import { usePreview } from 'react-dnd-multi-backend';
+import { MergeAnimation } from './merge-animation';
+import { useEffect } from 'react';
+import gsap from 'gsap';
+import { COMPLETE_ANIMATION_DURATION, MERGE_ANIMATION_DURATION } from '../../constants';
 
 const NUMBER_TO_BORDER = { 
     0: border0,
@@ -34,9 +38,9 @@ const NUMBER_TO_POSITION = {
 
 const Wrapper = styled.div`
     position: relative;
-    width: var(--cardSize);
-    height: var(--cardSize);
-    border-radius: 10px;
+    width: ${({$isMini}) => $isMini ? 'calc(var(--cardSize) * 0.75)' : 'var(--cardSize)'};
+    height: ${({$isMini}) => $isMini ? 'calc(var(--cardSize) * 0.75)' : 'var(--cardSize)'};
+    border-radius: ${({$isMini}) => $isMini ? '7px' : '10px'};
     background-color: white;
     background-image: url(${({src}) => src});
     background-repeat: no-repeat;
@@ -56,9 +60,42 @@ const Border = styled.div`
 
 const StyledPreview = styled(Wrapper)`
     opacity: 0.5;
+    z-index: 20;
 `;
 
-export const Card = ({ card, number, onDrop }) => {
+const MergeAnimationStyled = styled(MergeAnimation)`
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;
+
+const MergeAnimationBg = styled.div`
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    opacity: 0.7;
+`;
+
+export const Card = ({ card, number, onDrop, canDrag, isMini }) => {
+    useEffect(() => {
+        if (card?.isLast) {
+            setTimeout(() => {
+                gsap.to(`#${card?.id}`, {
+                    scale: 0.6,
+                    duration: COMPLETE_ANIMATION_DURATION / 1000,
+                });
+            }, MERGE_ANIMATION_DURATION);
+        }
+    }, []);
+
+
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'BLOCK',
         item: () => ({...card, number}),
@@ -79,7 +116,7 @@ export const Card = ({ card, number, onDrop }) => {
         },
     }), [card])
 
-    const CardPreview = (props) => {
+    const CardPreview = () => {
         const {display, style} = usePreview();
 
         if (!display) {
@@ -95,20 +132,28 @@ export const Card = ({ card, number, onDrop }) => {
 
     if (isDragging) {
         return (
-        <>
-            <div style={{width: 'var(--cardSize)'}}>
-            
-            </div>
-            <CardPreview />
-        </>
-    )
+            <>
+                <div style={{width: 'var(--cardSize)'}} />
+                <CardPreview />
+            </>
+        )
     }
 
-
     return (
-        <Wrapper src={card?.src ?? ''} ref={mergeRefs([card?.src ? drag : null, drop])}>
+        <Wrapper 
+            ref={mergeRefs([card?.src || canDrag || !card?.isLast ? drag : null, drop])}
+            id={card?.id} 
+            src={card?.src ?? ''} 
+            $isMini={isMini} 
+            $isNew={card?.isNew}
+        >
             <Border $number={number} />
-            {/* {hovered && <MergingImg />} */}
+            {card?.isNew && (
+                <>
+                <MergeAnimationBg />
+                    <MergeAnimationStyled />
+                </>
+            )}
         </Wrapper>
     )
 };

@@ -59,11 +59,6 @@ export const Object = ({className, object, canDrag, onDelete}) => {
 
     const [isClicked, setIsClicked] = useState(false);
 
-    const handleDelete = () => {
-        setIsClicked(false);
-        onDelete?.();
-    };
-
     const [{ isDragging }, drag, preview] = useDrag(() => ({
         type: 'BLOCK',
         item: () => object,

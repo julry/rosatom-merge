@@ -4,13 +4,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { MouseTransition, TouchTransition, DndProvider } from 'react-dnd-multi-backend';
 import bg from '../../../assets/images/game2Bg.png';
-import cooling from '../../../assets/images/cooling.png';
-import medicine from '../../../assets/images/medicine.png';
-import cod from '../../../assets/images/cod.png';
-import home from '../../../assets/images/homeBuilding.png';
-import transformer from '../../../assets/images/transformer.png';
-import reactBuild from '../../../assets/images/reactBuild.png';
-import turboGen from '../../../assets/images/turboGen.png';
 import { ContentWrapper } from '../../shared/content-wrapper';
 import { DarkenBg } from '../../shared/darken-bg';
 import { Block } from '../../shared/block';
@@ -22,9 +15,12 @@ import { Board } from './board';
 import { useMemo } from 'react';
 import { Object } from './object';
 import { useProgress } from '../../../hooks/useProgress';
+import { RulesHeader } from '../../shared/rules-header';
+import { Modal } from '../../shared/modal';
+import { initialResults } from './constants';
 
 const Wrapper = styled(ContentWrapper)`
-    padding: calc(var(--screen_padding) * 2) calc(var(--screen_padding) * 1.5);
+    padding: var(--screen_padding) calc(var(--screen_padding) * 1.5);
     background: url(${bg}) no-repeat  0 0 /cover;
 `;
 
@@ -39,8 +35,14 @@ const ButtonStyled = styled(Button)`
 `;
 
 const ObjectsWrapper = styled.div`
+    position: relative;
+    z-index: ${({$isRules}) => $isRules ? 40 : 1};
     display: flex;
-    margin: 0 auto calc(2 * var(--screen_padding));
+    margin: calc(0.75 * var(--screen_padding)) auto var(--screen_padding);
+`;
+
+const ButtonRulesStyled = styled(Button)`
+    margin: calc(1.6 * var(--screen_padding)) auto 0;
 `;
 
 const ObjectStyled = styled(Object)`
@@ -55,6 +57,31 @@ const ObjectStyled = styled(Object)`
     &:first-child {
         margin-left: 0;
     }
+
+    @media screen and (min-width: 640px) and (max-height: 700px) {
+        width: 55px;
+        height: 55px;
+        margin-left: -15px;
+    }
+`;
+
+const BlockStyled = styled(Block)`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;
+
+const RulesCell = styled.div`
+    position: fixed;
+    z-index: 50;
+    width: var(--objectSize);
+    height: var(--objectSize);
+    border: 1px solid #FFFFE0;
+`;
+
+const SuccessModal = styled(Block)`
+    margin-top: min(80px, 21vw);
 `;
 
 export const Screen5 = () => {
@@ -65,83 +92,35 @@ export const Screen5 = () => {
     const [wrongCols, setWrongCols] = useState([]);
     const [isBreaking, setIsBreaking] = useState(false);
     const [isChecking, setIsChecking] = useState(false);
-    const [results, setResults] = useState({
-        row: [
-            {
-                id: 0,
-                type: 'cooling',
-                src: cooling,
-                amount: 0,
-                max: 2,
-            },
-            {
-                id: 1,
-                type: 'turboGen',
-                src: turboGen,
-                amount: 0,
-                max: 1,
-            },
-            {
-                id: 2,
-                type: 'reactBuild',
-                src: reactBuild,
-                amount: 0,
-                max: 2,
-            },
-            {
-                id: 3,
-                type: 'transformer',
-                src: transformer,
-                amount: 0,
-                max: 2,
-            },
-        ],
-        column: [
-            {
-                id: 0,
-                src: cod,
-                type: 'cod',
-                amount: 0,
-                max: 1,
-            }, {
-                id: 1,
-                src: medicine,
-                type: 'medicine',
-                amount: 0,
-                max: 2,
-            },
-            {
-                id: 2,
-                src: home,
-                type: 'home',
-                amount: 0,
-                max: 2,
-            },
-        ],
-    });
+    const [isRules, setIsRules] = useState(true);
+    const [results, setResults] = useState(initialResults);
+
+    const $rulesRect = useRef();
 
     const objects = useMemo(() => [...results.row, ...results.column], [results]);
 
     const correctText = 'Ура! У тебя получилось освоить территорию и построить ' + 
     'на ней целый комплекс необходимых объектов Росатома — АЭС, ЦОД и медицинский центр. Теперь все работает слажено!';
-    const rulesText = () => ( 
-        <>
-            <b>Перетаскивай</b> объекты из верхней части <b>на поле</b>. Расположи всё в правильной комбинации — <b>сбоку подсказки</b>!
-        </>
-    );
 
     const [additional, setAdditional] = useState({
         type: 'info', 
         shown: false, 
-        text: rulesText
     });
 
     const isIce = useMemo(() => additional.shown && additional.type === 'wrong', [additional]);
 
     useEffect(() => {
-        if ($timeOut.current) return;
-
-        $timeOut.current = setTimeout(() => setAdditional(prev => ({...prev, shown: false})), 3500);
+        function handleResize() {
+            $rulesRect.current = document?.getElementById('row_3-column_0')?.getBoundingClientRect();
+        }
+      
+        handleResize();
+      
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const HTML5toTouch = {
@@ -242,7 +221,6 @@ export const Screen5 = () => {
     };
 
     const handleDelete = (row, col) => {
-        console.log(row, col);
         setShown(prev => {
             const items = prev.filter(prevItem => !(prevItem.row === row && col === prevItem.col));
 
@@ -268,7 +246,8 @@ export const Screen5 = () => {
     return (
         <DndProvider options={HTML5toTouch}>
             <Wrapper>
-                <ObjectsWrapper>
+                <RulesHeader onClick={() => setIsRules(true)} />
+                <ObjectsWrapper $isRules={isRules}>
                     {objects.map((object, i) => (
                         <ObjectStyled key={`${object.id}_${i}`} object={object} i={i} canDrag/>
                     ))}
@@ -282,7 +261,16 @@ export const Screen5 = () => {
                     wrongRows={wrongRows}
                     isBreaking={isBreaking}
                     onDelete={handleDelete}
+                    isRules={isRules}
                 />
+                {isRules && (
+                    <RulesCell style={{
+                        top: $rulesRect?.current?.y, 
+                        left: $rulesRect?.current?.x,
+                        width: $rulesRect?.current?.width,
+                        height: $rulesRect?.current?.height,
+                    }}/>
+                )}
                 <ButtonStyled 
                     bg="blue" 
                     $isIce={isIce} 
@@ -294,11 +282,10 @@ export const Screen5 = () => {
                 {additional.shown && (
                 <AdditionalWrapper>
                     {additional.type === 'info' ? (
-                        <Block color='var(--main_green)'>
-                            <Text>
-                                {typeof additional.text === 'function' ? additional.text() : additional.text}
-                            </Text>
-                        </Block>
+                        <SuccessModal>
+                            <Text>{correctText}</Text>
+                            <ButtonRulesStyled bg="blue" onClick={next}>Далее</ButtonRulesStyled>
+                        </SuccessModal>
                     ) : (
                         <Block>
                             <Title>упс, стройка заморожена</Title>
@@ -308,6 +295,17 @@ export const Screen5 = () => {
                         </Block>
                         )}
                 </AdditionalWrapper>
+            )}
+            {isRules && (
+                <Modal>
+                    <BlockStyled> 
+                        <Text>
+                            <b>Перетаскивай на поле</b> объекты из верхней части. Расположи всё в правильной комбинации —{' '}
+                            <b>сбоку будут подсказки</b>!
+                        </Text> 
+                        <ButtonRulesStyled bg="blue" onClick={() => setIsRules(false)}>Начать</ButtonRulesStyled>
+                    </BlockStyled>
+                </Modal>
             )}
             </Wrapper>
             

@@ -7,7 +7,7 @@ const Wrapper = styled.td`
     border: 1px solid #FFFFE0;
 `;
 
-export const ObjectPlace = ({ col, row, onDrop, children }) => {
+export const ObjectPlace = ({ id, col, row, onDrop, children }) => {
     const [, drop] = useDrop(
         {
             accept: 'BLOCK',
@@ -22,5 +22,5 @@ export const ObjectPlace = ({ col, row, onDrop, children }) => {
         }
     );
 
-    return <Wrapper ref={drop}>{children}</Wrapper>
+    return <Wrapper ref={drop} id={id}>{children}</Wrapper>
 }

@@ -13,6 +13,11 @@ const FinishedWrapper = styled(DarkenBg)`
     padding: var(--screen_padding);
 `;
 
+const BlockStyled = styled(Block)`
+    margin-top: min(80px, 21vw);
+`;
+
+
 const ButtonStyled = styled(Button)`
     margin: calc(var(--screen_padding) * 1.5) auto 0;
 `;
@@ -27,10 +32,10 @@ export const Screen3 = () => {
 
     return (
         <>
-            <MergeGame cards={cards} results={results} isShownBlock isShownDarken={!isFinished} onFinish={() => setIsFinished(true)}/>
+            <MergeGame cards={cards} results={results} isShownDarken={!isFinished} onFinish={() => setIsFinished(true)}/>
             {isFinished && (
                 <FinishedWrapper>
-                    <Block>
+                    <BlockStyled>
                         <Title>Чего-то не хватает!</Title>
                         <Text>
                             {
@@ -40,7 +45,7 @@ export const Screen3 = () => {
                             }
                         </Text>
                         <ButtonStyled onClick={handleNext} bg="blue">Начнём</ButtonStyled>
-                    </Block>
+                    </BlockStyled>
                 </FinishedWrapper>
             )}
         </>

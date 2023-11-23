@@ -179,6 +179,7 @@ export const Board = ({ onDrop, wrongCols, wrongRows, shown, results, isIce, isB
                                     {colCells.map((c) => (
                                         <ObjectPlace
                                             key={`column_${c}`} 
+                                            id={`row_${r}-column_${c}`}
                                             onDrop={onDrop} 
                                             col={c} 
                                             row={r} 
