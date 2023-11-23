@@ -7,7 +7,7 @@ import { Object } from "./object";
 import { ObjectPlace } from "./object-place";
 
 const Wrapper = styled.div`
-    width: 100%;
+    margin: 0 auto;
     --objectSize: calc(var(--cardSize) * 75 / 109);
     --wrongBorder: 2px solid #FF4C4C;
 `;

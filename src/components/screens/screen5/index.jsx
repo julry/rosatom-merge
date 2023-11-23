@@ -35,6 +35,7 @@ const ButtonStyled = styled(Button)`
 `;
 
 const ObjectsWrapper = styled.div`
+    width: 100%;
     position: relative;
     z-index: ${({$isRules}) => $isRules ? 40 : 1};
     display: flex;
@@ -46,12 +47,13 @@ const ButtonRulesStyled = styled(Button)`
 `;
 
 const ObjectStyled = styled(Object)`
-    width: calc(var(--cardSize) * 69 / 110);
+    --objectWidth:  calc(var(--cardSize) * 69 / 110);
+    width: var(--objectWidth);
     height: calc(var(--cardSize) * 80 / 110);
     background-color: white;
     box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
-    margin-left: calc(0px - var(--cardSize) * 27 / 110);
+    margin-left: calc((100% - 7 * var(--objectWidth)) / 6);
     z-index: calc(10 - ${({i}) => i});
 
     &:first-child {
@@ -59,9 +61,8 @@ const ObjectStyled = styled(Object)`
     }
 
     @media screen and (min-width: 640px) and (max-height: 700px) {
-        width: 55px;
+        --objectWidth: 55px;
         height: 55px;
-        margin-left: -15px;
     }
 `;
 
@@ -70,6 +71,7 @@ const BlockStyled = styled(Block)`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 56;
 `;
 
 const RulesCell = styled.div`
@@ -179,11 +181,7 @@ export const Screen5 = () => {
         }, []);
 
         if (!rows.length && !cols.length){
-            setAdditional({shown: true, text: correctText, type: 'info'});
-            $timeOut.current = setTimeout(() => {
-                setAdditional({shown: false, text: correctText, type: 'info'});
-                next();
-            }, 4000);
+            setAdditional({shown: true, type: 'info'});
             return;
         }
 
@@ -263,14 +261,6 @@ export const Screen5 = () => {
                     onDelete={handleDelete}
                     isRules={isRules}
                 />
-                {isRules && (
-                    <RulesCell style={{
-                        top: $rulesRect?.current?.y, 
-                        left: $rulesRect?.current?.x,
-                        width: $rulesRect?.current?.width,
-                        height: $rulesRect?.current?.height,
-                    }}/>
-                )}
                 <ButtonStyled 
                     bg="blue" 
                     $isIce={isIce} 
@@ -305,6 +295,14 @@ export const Screen5 = () => {
                         </Text> 
                         <ButtonRulesStyled bg="blue" onClick={() => setIsRules(false)}>Начать</ButtonRulesStyled>
                     </BlockStyled>
+                    {isRules && (
+                    <RulesCell style={{
+                        top: $rulesRect?.current?.y, 
+                        left: $rulesRect?.current?.x,
+                        width: $rulesRect?.current?.width,
+                        height: $rulesRect?.current?.height,
+                    }}/>
+                )}
                 </Modal>
             )}
             </Wrapper>

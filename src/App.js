@@ -41,7 +41,8 @@ const ComponentWrapper = styled(FlexWrapper)`
     max-width: 400px;
     border: 3px solid black;
     border-radius: 20px;
-    margin: var(--screen_padding) 0;
+    margin: 5px 0 auto;
+    max-height: 730px;
   }
 `;
 

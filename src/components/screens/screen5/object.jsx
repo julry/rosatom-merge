@@ -108,7 +108,7 @@ export const Object = ({className, object, canDrag, onDelete}) => {
                 className={className} 
                 src={src} 
                 $isPlaced={object.row !== undefined} 
-                onClick={() => setIsClicked(true)}
+                onClick={() => setIsClicked(prev => !prev)}
             >
                 {object.row !== undefined && isClicked && (
                     <Border>
