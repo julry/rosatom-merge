@@ -90,6 +90,7 @@ export const Screen5 = () => {
     const { next } = useProgress();
     const $timeOut = useRef();
     const [shown, setShown] = useState([]);
+    const [isFirstRules, setIsFirstRules] = useState(true);
     const [wrongRows, setWrongRows] = useState([]);
     const [wrongCols, setWrongCols] = useState([]);
     const [isBreaking, setIsBreaking] = useState(false);
@@ -241,10 +242,15 @@ export const Screen5 = () => {
         })
     };
 
+    const handleClickRules = () => {
+        if (isFirstRules) setIsFirstRules(false);
+        setIsRules(true);
+    };
+
     return (
         <DndProvider options={HTML5toTouch}>
             <Wrapper>
-                <RulesHeader onClick={() => setIsRules(true)} />
+                <RulesHeader onClick={handleClickRules} />
                 <ObjectsWrapper $isRules={isRules}>
                     {objects.map((object, i) => (
                         <ObjectStyled key={`${object.id}_${i}`} object={object} i={i} canDrag/>
@@ -293,7 +299,9 @@ export const Screen5 = () => {
                             <b>Перетаскивай на поле</b> объекты из верхней части. Расположи всё в правильной комбинации —{' '}
                             <b>сбоку будут подсказки</b>!
                         </Text> 
-                        <ButtonRulesStyled bg="blue" onClick={() => setIsRules(false)}>Начать</ButtonRulesStyled>
+                        <ButtonRulesStyled bg="blue" onClick={() => setIsRules(false)}>
+                            {isFirstRules ? 'Начать' : 'Понятно'}
+                        </ButtonRulesStyled>
                     </BlockStyled>
                     {isRules && (
                     <RulesCell style={{

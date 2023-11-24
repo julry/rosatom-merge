@@ -25,7 +25,7 @@ const ButtonStyled = styled(Button)`
     margin: 0 auto;
 `;
 
-export const Rules1 = ({onClick}) => {
+export const Rules1 = ({onClick, isSecond}) => {
     const [cards, setCards] = useState(rulesCards);
     const $animation = useRef();
 
@@ -47,8 +47,16 @@ export const Rules1 = ({onClick}) => {
  
     return (
         <BlockStyled>
-            <Text>
-                <b>Находи</b> и <b>соединяй пары</b> объектов на поле, чтобы получить все части АЭС.
+            <Text> 
+                {isSecond ? 
+                <>
+                    <b>Находи</b> и <b>соединяй пары</b> объектов по тому же принципу, чтобы получить оставшиеся объекты для стройплощадки.
+                </> : 
+                <>
+                    <b>Находи</b> и <b>соединяй пары</b> объектов на поле, чтобы получить все части АЭС.
+                </>
+                }
+                
             </Text>
             <Cards cards={cards} isMini/>
             <ButtonStyled bg="blue" onClick={onClick}>Понятно</ButtonStyled>

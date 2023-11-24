@@ -35,7 +35,7 @@ export const Screen4 = () => {
     
     return (
         <>
-            <MergeGame cards={cards} results={results} isShownDarken={!isFinished} onFinish={() => setIsFinished(true)} />
+            <MergeGame cards={cards} results={results} isShownDarken={!isFinished} onFinish={() => setIsFinished(true)} isSecond/>
             {isFinished && (<FinishedWrapper>
                 <BlockStyled>
                     <Title>Полпути пройдено!</Title>

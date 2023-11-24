@@ -270,7 +270,7 @@ export const MergeGame = (props) => {
             {(props.isShownDarken && !isRules && !resultClicked) && <DarkenBg />}
             {isRules && (
                 <Modal>
-                    <Rules1 onClick={() => setIsRules(false)} />
+                    <Rules1 onClick={() => setIsRules(false)} isSecond={props.isSecond}/>
                 </Modal>
             )}
         </>
