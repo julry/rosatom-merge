@@ -134,7 +134,7 @@ export const results = [
     {
         id: 'result_cooling',
         src: cooling,
-        text: 'Градильня',
+        text: 'Градирня',
         amount: 2,
         info: {
             items: [
@@ -169,7 +169,7 @@ export const results = [
                     isLast: true,
                     width: 'min(35px, 9.3vw)',
                     height: 'min(38px, 10.1vw)',
-                    text: 'Градильня'
+                    text: 'Градирня'
                 }, 
             ],
             position: 'left: 0',
