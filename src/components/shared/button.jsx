@@ -16,7 +16,7 @@ export const Wrapper = styled.button`
     font-size: 16px;
     cursor: pointer;
 
-    &:hover {
+    &:active {
         background: var(--main_${({bg}) => bg}_hovered);
     }
 `;

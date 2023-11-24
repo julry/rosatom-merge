@@ -214,11 +214,6 @@ export const Screen5 = () => {
         }, 5500);
     };
 
-    const handleClickBtn = () => {
-        if (isIce) handleBrake();
-        else handleCheck();
-    };
-
     const handleDelete = (row, col) => {
         setShown(prev => {
             const items = prev.filter(prevItem => !(prevItem.row === row && col === prevItem.col));
@@ -267,14 +262,27 @@ export const Screen5 = () => {
                     onDelete={handleDelete}
                     isRules={isRules}
                 />
-                <ButtonStyled 
-                    bg="blue" 
-                    $isIce={isIce} 
-                    onClick={handleClickBtn}
-                    disabled={isChecking || isBreaking}
-                >
-                    {isIce ? 'Расколоть лед!' : 'Построить'}
-                </ButtonStyled>
+                {
+                    isIce ? (
+                        <ButtonStyled 
+                            bg="blue" 
+                            $isIce 
+                            onClick={handleBrake}
+                            disabled={isBreaking}
+                        >
+                           Расколоть лёд!
+                        </ButtonStyled>
+                    ) : (
+                        <ButtonStyled 
+                            bg="blue" 
+                            onClick={handleCheck}
+                            disabled={isChecking}
+                        >
+                            Построить
+                        </ButtonStyled>
+                    )
+                }
+                
                 {additional.shown && (
                 <AdditionalWrapper>
                     {additional.type === 'info' ? (
