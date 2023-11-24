@@ -44,7 +44,7 @@ export const Screen3 = () => {
                                 '\nДавай их тоже соберём!'
                             }
                         </Text>
-                        <ButtonStyled onClick={handleNext} bg="blue">Начнём</ButtonStyled>
+                        <ButtonStyled onClick={handleNext} bg="blue">Начать</ButtonStyled>
                     </BlockStyled>
                 </FinishedWrapper>
             )}
