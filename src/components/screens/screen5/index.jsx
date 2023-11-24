@@ -37,7 +37,7 @@ const ButtonStyled = styled(Button)`
 const ObjectsWrapper = styled.div`
     width: 100%;
     position: relative;
-    z-index: ${({$isRules}) => $isRules ? 40 : 1};
+    z-index: ${({$isRules}) => $isRules ? 40 : 4};
     display: flex;
     margin: calc(0.75 * var(--screen_padding)) auto var(--screen_padding);
 `;

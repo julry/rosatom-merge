@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 const PreviewStyled = styled(Wrapper)`
     width: calc(var(--cardSize) * 0.8);
     height: calc(var(--cardSize) * 0.8);
-    z-index: 20;
+    z-index: 100;
 `;
 
 const Border = styled.div`
