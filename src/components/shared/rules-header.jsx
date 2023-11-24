@@ -17,6 +17,7 @@ const RulesBtn = styled(Button)`
     padding: 0;
 
     & svg {
+        flex-shrink: 0;
         display: block;
         width: min(2.1vw, 8px);
         height: min(4vw, 15px);
