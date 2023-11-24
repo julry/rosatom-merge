@@ -2,27 +2,41 @@ import gsap from 'gsap';
 import {useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { COMPLETE_ANIMATION_DURATION, MERGE_ANIMATION_DURATION } from '../../constants';
-import { Block } from './block';
-import { Button } from './button';
 import { CardsField } from './cards-field';
 import { ContentWrapper } from './content-wrapper';
 import { DarkenBg } from './darken-bg';
 import { FlexWrapper } from './flex-wrapper';
 import { Modal } from './modal';
+import { ResultInfo } from './result-info';
 import { RulesHeader } from './rules-header';
 import {Rules1} from './rules1';
 
 const Wrapper = styled(ContentWrapper)`
     padding-top: var(--screen_padding);
+    --infoHeight: min(110px, 26.6vw);
+
+    @media screen and (min-width: 640px) and (max-height: 630px) {
+        --infoHeight: 80px;
+    }
+
+    @media screen and (min-width: 640px) and (max-height: 600px) {
+        --infoHeight: 50px;
+    }
+
+    @media screen and (min-width: 640px) and (max-height: 570px) {
+        --infoHeight: calc(2 * var(--screen_padding));
+    }
 `;
 
 const ResultWrapper = styled.div`
+    position: relative;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: var(--screen_padding);
     grid-template-rows: 1fr;
     width: 100%;
-    margin: var(--screen_padding) 0 calc(1.8 * var(--screen_padding));
+    margin: var(--screen_padding) 0 var(--infoHeight);
+    --fontSize: 10px;
 `;
 
 const ResultCard = styled(FlexWrapper)`
@@ -33,6 +47,8 @@ const ResultCard = styled(FlexWrapper)`
     border-radius: 10px;
     background: white;
     padding-bottom: calc(var(--cardSize) * 6 / 109);
+    ${({$clicked}) => $clicked ? 'z-index: 20' : ''};
+    cursor: pointer;
 `;
 
 const ResultImg = styled.div`
@@ -40,6 +56,14 @@ const ResultImg = styled.div`
     height: calc(var(--cardSize) * 74 / 109);
     background: url(${({src}) => src}) no-repeat center center;
     background-size: contain;
+`;
+
+const ResultInfoStyled = styled(ResultInfo)`
+    top: calc(100% + 1.7*var(--fontSize) + 4px);
+
+    @media screen and (max-width: 330px) {
+        top: calc(100% + 1.7*var(--fontSize));
+    }
 `;
 
 const ResultAmount = styled.p`
@@ -52,8 +76,8 @@ const ResultAmount = styled.p`
 
 const ResultText = styled.p`
     position: absolute;
-    --fontSize: 10px;
-    bottom: calc(0px - var(--cardSize) * 6 / 109 - var(--fontSize));
+    --bottomValue:  calc(0px - var(--cardSize) * 6 / 109 - var(--fontSize) - 2px);
+    bottom: var(--bottomValue);
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -65,12 +89,30 @@ const ResultText = styled.p`
     @media screen and (max-width: 330px) {
         --fontSize: 8px;
     };
+
+    &::before {
+        content: '';
+        position: absolute;
+        opacity: ${({$clicked}) => $clicked ? 1 : 0};
+        background: var(--main_blue); 
+        border: 1px solid white; 
+        border-radius: 8px 8px 0 0; 
+        padding: 2px;
+        top: -4px;
+        left: -4px;
+        width: calc(100% + 2px);
+        height: calc(100% + 2px);
+        z-index: -4;
+    }
 `;
 
 const Cards = styled(CardsField)`
     margin: 0 auto;
 `;
 
+const RulesHeaderStyled = styled(RulesHeader)`
+    ${({$clicked}) => $clicked ? 'z-index: 20' : ''};
+`;
 
 const FIELD_SIZE = 3;
 
@@ -82,7 +124,8 @@ export const MergeGame = (props) => {
         shownCards: [],
         appearedCards: [],
         availableCards: []
-    })
+    });
+    const [resultClicked, setResultClicked] = useState('');
 
     const firstLvlCards = useMemo(() => cards.filter(card => card.lvl === 1), [cards]); 
 
@@ -187,22 +230,44 @@ export const MergeGame = (props) => {
         if (!playingCards.shownCards.filter(item => item !== null).length && !!playingCards.appearedCards.length) onFinish();
     }, [playingCards, onFinish]);
 
+    const handleClickResult = (e, id) => {
+        console.log(id);
+        e.stopPropagation();
+        setResultClicked(id);
+    };
+
     return (
         <>
             <Wrapper>
-                <RulesHeader onClick={() => setIsRules(true)} />
+                <RulesHeaderStyled onClick={() => setIsRules(true)} $clicked={resultClicked} />
                 <ResultWrapper>
                     {props.results?.map((result) => (
-                        <ResultCard key={result.id} id={result.id}>
+                        <ResultCard 
+                            key={result.id} 
+                            id={result.id}
+                            $clicked={resultClicked === result.id}
+                            onClick={(e) => handleClickResult(e, result.id)}
+                        >
                             <ResultImg src={result.src} />
                             <ResultAmount>{finishedCards[result.id] ?? 0}/{result.amount}</ResultAmount>
-                            <ResultText>{result.text}</ResultText>
+                            <ResultText $clicked={resultClicked === result.id}>
+                                {result.text}
+                            </ResultText>
                         </ResultCard>
                     ))}
+                    {resultClicked && (
+                        <>
+                            <ResultInfoStyled 
+                                info={props.results.find(res => res.id === resultClicked)?.info} 
+                                onClick={() => setResultClicked('')}
+                            />
+                        </>
+                    )}
                 </ResultWrapper>
+                {resultClicked && <DarkenBg onClick={() => setResultClicked('')}/>}
                 <Cards cards={playingCards.shownCards} onDrop={handleDrop}/>
             </Wrapper>
-            {(props.isShownDarken && !isRules) && <DarkenBg />}
+            {(props.isShownDarken && !isRules && !resultClicked) && <DarkenBg />}
             {isRules && (
                 <Modal>
                     <Rules1 onClick={() => setIsRules(false)} />
