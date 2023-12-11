@@ -9,6 +9,7 @@ import { Title, Text } from "../../shared/texts";
 import { DarkenBg } from "../../shared/darken-bg";
 import { Button } from "../../shared/button";
 import { results, cards } from './constants';
+import { Timer } from "../../shared/timer";
 
 const FinishedWrapper = styled(DarkenBg)`
     z-index: 10;
@@ -25,6 +26,10 @@ const ButtonStyled = styled(Button)`
 
 const BlockStyled = styled(Block)`
     margin-top: min(80px, 21vw);
+`;
+
+const RulesBlock = styled(Block)`
+    margin-top: min(13.6vw, 62px);
 `;
 
 export const Screen4 = () => {
@@ -48,7 +53,8 @@ export const Screen4 = () => {
             />
             {isStart && (
                 <FinishedWrapper>
-                    <BlockStyled>
+                    <Timer initialTime={60} />
+                    <RulesBlock>
                         <Title>Чего-то не хватает!</Title>
                         <Text>
                             {
@@ -59,7 +65,7 @@ export const Screen4 = () => {
                                 Постарайся собрать всё <b>за 1 минуту</b>.
                         </Text>
                         <ButtonStyled onClick={() => setIsStart(false)} bg="blue">Начать</ButtonStyled>
-                    </BlockStyled>
+                    </RulesBlock>
                 </FinishedWrapper>
             )}
             {isFinished && (

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.4b10efad.css",
-    "main.js": "./static/js/main.9cdd7482.js",
+    "main.js": "./static/js/main.aea07528.js",
     "static/media/game2Bg.png": "./static/media/game2Bg.2786ed29780b4707fdf8.png",
     "static/media/Rosatom-Light.ttf": "./static/media/Rosatom-Light.29b0a57f02b2112f2cd5.ttf",
     "static/media/Rosatom-Regular.ttf": "./static/media/Rosatom-Regular.05ccb6ce475bc89de1e7.ttf",
@@ -24,10 +24,10 @@
     "static/media/start-button-icon.svg": "./static/media/start-button-icon.30441cceb1cb5b73742b53dacf38d180.svg",
     "index.html": "./index.html",
     "main.4b10efad.css.map": "./static/css/main.4b10efad.css.map",
-    "main.9cdd7482.js.map": "./static/js/main.9cdd7482.js.map"
+    "main.aea07528.js.map": "./static/js/main.aea07528.js.map"
   },
   "entrypoints": [
     "static/css/main.4b10efad.css",
-    "static/js/main.9cdd7482.js"
+    "static/js/main.aea07528.js"
   ]
 }
