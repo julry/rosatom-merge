@@ -54,8 +54,9 @@ export const Screen4 = () => {
                             {
                                 'Росатом не только про АЭС, но и про создание инфраструктуры — центра ' +
                                 'обработки данных, медицинского центра и жилых корпусов — и даже про атомный ледокол! '+
-                                '\nДавай их тоже соберём!'
+                                '\n'
                             }
+                                Постарайся собрать всё <b>за 1 минуту</b>.
                         </Text>
                         <ButtonStyled onClick={() => setIsStart(false)} bg="blue">Начать</ButtonStyled>
                     </BlockStyled>
@@ -72,14 +73,14 @@ export const Screen4 = () => {
                                 'Немного передохнули… продолжим строить?'
                             }
                         </Text>
-                        <ButtonStyled type="dark" bg="red" onClick={handleNext}>Продолжить</ButtonStyled>
+                        <ButtonStyled type="light" bg="green" onClick={handleNext}>Продолжить</ButtonStyled>
                         <Text>
                             {
                                 'В конце стройки ты сможешь узнать все про стройотряды Росатома, ' + 
                                 'но если ты уже сейчас хочешь стать бойцом, переходи по ссылке:'
                             }
                         </Text>
-                        <ButtonStyled type="light" bg="green" onClick={() => openLink(VK_LINK)}>В стройотряд</ButtonStyled>
+                        <ButtonStyled type="dark" bg="red" onClick={() => openLink(VK_LINK)}>В стройотряд</ButtonStyled>
                     </BlockStyled>
                 </FinishedWrapper>
             )}
