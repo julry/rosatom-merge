@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
@@ -25,7 +25,7 @@ const Wrapper = styled(ContentWrapper)`
 `;
 
 const AdditionalWrapper = styled(DarkenBg)`
-    padding: calc(var(--screen_padding) * 1.5) var(--screen_padding);
+    padding: calc(var(--screen_padding) * 2.8) var(--screen_padding);
     z-index: 12;
 `;
 
@@ -97,6 +97,7 @@ export const Screen5 = () => {
     const [isChecking, setIsChecking] = useState(false);
     const [isRules, setIsRules] = useState(true);
     const [results, setResults] = useState(initialResults);
+    const [isTimeOut, setIsTimeOut] = useState(false);
 
     const $rulesRect = useRef();
 
@@ -167,6 +168,19 @@ export const Screen5 = () => {
         })
     };
 
+    const handleRestart = () => {
+        if (isTimeOut) setIsTimeOut(false);
+        setShown([]);
+        setWrongCols([]);
+        setWrongRows([]);
+        setResults(prev => {
+            const row = prev.row.map(res => ({...res, amount: 0}));
+            const column = prev.column.map(res => ({...res, amount: 0}));
+
+            return ({row, column});
+        });
+    }
+
     const handleCheck = () => {
         if (isChecking) return;
         const cols = results.column.reduce((wrong, resultColumn) => {
@@ -193,15 +207,7 @@ export const Screen5 = () => {
         $timeOut.current = setTimeout(() => {
             setAdditional({shown: true, type: 'wrong'});
             setIsChecking(false);
-            setShown([]);
-            setWrongCols([]);
-            setWrongRows([]);
-            setResults(prev => {
-                const row = prev.row.map(res => ({...res, amount: 0}));
-                const column = prev.column.map(res => ({...res, amount: 0}));
-
-                return ({row, column});
-            });
+            handleRestart();
         }, 2000);
     }
 
@@ -240,12 +246,26 @@ export const Screen5 = () => {
     const handleClickRules = () => {
         if (isFirstRules) setIsFirstRules(false);
         setIsRules(true);
-    };
+    }; 
+
+    const handleTimeout = useCallback(() => {
+        setIsTimeOut(true);
+    }, [setIsTimeOut]);
+
+    const isStartTimer = useMemo(() => 
+        (!isRules && !additional.shown && !isTimeOut && !isChecking), 
+        [isRules, additional.shown, isTimeOut, isChecking]);
 
     return (
         <DndProvider options={HTML5toTouch}>
             <Wrapper>
-                <RulesHeader onClick={handleClickRules} />
+                <RulesHeader 
+                    onClick={handleClickRules} 
+                    initialTime={90} 
+                    onRestart={handleRestart} 
+                    onFinish={handleTimeout}
+                    isStart={isStartTimer}
+                />
                 <ObjectsWrapper $isRules={isRules}>
                     {objects.map((object, i) => (
                         <ObjectStyled key={`${object.id}_${i}`} object={object} i={i} canDrag/>
@@ -304,8 +324,9 @@ export const Screen5 = () => {
                 <Modal>
                     <BlockStyled> 
                         <Text>
-                            <b>Перетаскивай на поле</b> объекты из верхней части. Расположи всё в правильной комбинации —{' '}
-                            <b>сбоку будут подсказки</b>!
+                            <b>Перетаскивай на поле объекты</b> из верхней части. 
+                            Расположи всё в правильной комбинации <b>за 1,5 минуты</b>. 
+                            Обрати внимание на <b>подсказки по краям</b>!
                         </Text> 
                         <ButtonRulesStyled bg="blue" onClick={() => setIsRules(false)}>
                             {isFirstRules ? 'Начать' : 'Понятно'}
@@ -322,7 +343,6 @@ export const Screen5 = () => {
                 </Modal>
             )}
             </Wrapper>
-            
         </DndProvider>
     );
 };

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { MAIN_LINK, VK_LINK } from "../../constants";
+import { openLink } from "../../utils/openLink";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
@@ -9,7 +11,6 @@ const BlockStyled = styled(Block)`
     margin: min(80px, 21vw) 0 min(33px, 8.8vw);
 `;
 
-
 const ButtonStyled = styled(Button)`
     margin: calc(var(--screen_padding) * 1.5) auto;
 
@@ -17,7 +18,6 @@ const ButtonStyled = styled(Button)`
         margin-bottom: 0;
     }
 `;
-
 
 export const Screen7 = () => {
     return (
@@ -30,13 +30,13 @@ export const Screen7 = () => {
                          'Узнай больше о стройотрядах на карьерном портале, подавай заявку на участие и стань частью истории.'
                         }
                     </Text>
-                    <ButtonStyled bg="red" >В стройотряд</ButtonStyled>
+                    <ButtonStyled bg="red" onClick={() => openLink(VK_LINK)}>В стройотряд</ButtonStyled>
                     <Text> 
                         {
                          'А познакомиться и стать частью Росатома можно тут:'
                         }
                     </Text>
-                    <ButtonStyled bg="blue">В Росатом</ButtonStyled>
+                    <ButtonStyled bg="blue" onClick={() => openLink(MAIN_LINK)}>В Росатом</ButtonStyled>
                 </BlockStyled>
             </ContentWrapper>
             <DarkenBg />

@@ -11,6 +11,7 @@ import { MergeAnimation } from './merge-animation';
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import { COMPLETE_ANIMATION_DURATION, MERGE_ANIMATION_DURATION } from '../../constants';
+import { useRef } from 'react';
 
 const NUMBER_TO_BORDER = { 
     0: border0,
@@ -83,17 +84,35 @@ const MergeAnimationBg = styled.div`
     opacity: 0.7;
 `;
 
-export const Card = ({ card, number, onDrop, canDrag, isMini }) => {
+export const Card = ({ card, number, onDrop, canDrag, isMini, resultX, resultY }) => {
+    const $card = useRef();
+    const $timeoutRef = useRef();
+
     useEffect(() => {
         if (card?.isLast) {
-            setTimeout(() => {
+            const {x, y} = $card.current.getBoundingClientRect();
+
+            $timeoutRef.current = setTimeout(() => {
                 gsap.to(`#${card?.id}`, {
                     scale: 0.6,
-                    duration: COMPLETE_ANIMATION_DURATION / 1000,
+                    duration: COMPLETE_ANIMATION_DURATION / 2000,
+                });
+                gsap.to(`#${card?.id}`, {
+                    x: resultX - x,
+                    y: resultY - y,
+                    duration: COMPLETE_ANIMATION_DURATION / 2000,
+                    delay: COMPLETE_ANIMATION_DURATION / 2000,
                 });
             }, MERGE_ANIMATION_DURATION);
         }
-    }, []);
+
+        return () => {
+            if ($timeoutRef.current) {
+                clearTimeout($timeoutRef.current);
+                $timeoutRef.current = null;
+            }
+        }
+    }, [card?.isLast, card?.id, resultX, resultY]);
 
 
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -141,7 +160,7 @@ export const Card = ({ card, number, onDrop, canDrag, isMini }) => {
 
     return (
         <Wrapper 
-            ref={mergeRefs([card?.src || canDrag || !card?.isLast ? drag : null, drop])}
+            ref={mergeRefs([card?.src || canDrag || !card?.isLast ? drag : null, $card, drop])}
             id={card?.id} 
             src={card?.src ?? ''} 
             $isMini={isMini} 

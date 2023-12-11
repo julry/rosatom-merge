@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { useCallback } from 'react';
 import {useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { COMPLETE_ANIMATION_DURATION, MERGE_ANIMATION_DURATION } from '../../constants';
@@ -126,12 +127,19 @@ export const MergeGame = (props) => {
         availableCards: []
     });
     const [resultClicked, setResultClicked] = useState('');
+    const [resultCoordinates, setResultCoordinates] = useState({});
+    const [isFinished, setIsFinished] = useState(false);
+    const [isTimeOut, setIsTimeOut] = useState(false);
 
-    const firstLvlCards = useMemo(() => cards.filter(card => card.lvl === 1), [cards]); 
+    const firstLvlCards = useMemo(() => cards?.filter(card => card.lvl === 1), [cards]); 
 
     useEffect(() => {
-        if (playingCards.shownCards.length) return;
-        
+        if (playingCards.shownCards?.length) return;
+        setResultCoordinates(props.results?.reduce((prev, { id, type }) => ({
+            ...prev, 
+            [type]: [document.getElementById(id).getBoundingClientRect().x, document.getElementById(id).getBoundingClientRect().y]
+        }), {}));
+
         const initialShown = [];
         let available = [...firstLvlCards];
 
@@ -139,18 +147,18 @@ export const MergeGame = (props) => {
 
         for (let i = 0; i < field.length; i++) {
             const newCard = firstLvlCards[Math.floor(Math.random() * firstLvlCards.length)];
-            if (initialShown.filter((card) => card.type === newCard.type).length >= newCard.max) {
+            if (initialShown?.filter((card) => card.type === newCard.type).length >= newCard.max) {
                 i = i - 1;
             } else {
                 initialShown.push({...newCard, id: newCard.id + i});
-                if (initialShown.filter((card) => card.type === newCard.type).length >= newCard.max) {
-                    available = available.filter((card) => card.type !== newCard.type);
+                if (initialShown?.filter((card) => card.type === newCard.type).length >= newCard.max) {
+                    available = available?.filter((card) => card.type !== newCard.type);
                 }
             }
         }
 
         setPlayingCards({shownCards: initialShown, appearedCards: initialShown, availableCards: available});
-    }, [firstLvlCards, playingCards.shownCards.length]);
+    }, [firstLvlCards, playingCards.shownCards?.length, props.results, props.initialTime]);
 
     const handleAppearNew = (index) => {
         setPlayingCards((prev) => {
@@ -159,7 +167,7 @@ export const MergeGame = (props) => {
             const newAppeared = [...appearedCards];
             let newAvailable = [...availableCards];
             if (!availableCards.length) return prev;
-            const shownFirst = shownCards.filter(card => card?.lvl === 1 && availableCards.find(({type}) => type === card.type));
+            const shownFirst = shownCards?.filter(card => card?.lvl === 1 && availableCards.find(({type}) => type === card.type));
            
             const pickFrom = shownFirst.length < availableCards.length && shownFirst.length > 0 ? shownFirst : availableCards;
             let randomIndex = Math.floor(Math.random() * pickFrom.length);
@@ -167,8 +175,8 @@ export const MergeGame = (props) => {
            
             newShown[index] = newCard;
             newAppeared.push(newCard);
-            if (newAppeared.filter(card => newCard?.type === card?.type).length >= newCard.max) {
-                newAvailable = availableCards.filter(({type}) => type !== newCard.type);
+            if (newAppeared?.filter(card => newCard?.type === card?.type).length >= newCard.max) {
+                newAvailable = availableCards?.filter(({type}) => type !== newCard.type);
             }
             
             return {...prev, shownCards: newShown, appearedCards: newAppeared, availableCards: newAvailable};
@@ -202,6 +210,7 @@ export const MergeGame = (props) => {
             const newShown = [...prev.shownCards];
             newShown[draggedNumber] = null;
             newShown[droppedNumber] = {...merged, isNew: true};
+            if (newShown?.filter(shown => !!shown).length < 2) setIsFinished(true);
             return {...prev, shownCards: newShown};
         });
 
@@ -227,21 +236,46 @@ export const MergeGame = (props) => {
     };
 
     useEffect(() => {
-        if (!playingCards.shownCards.filter(item => item !== null).length && !!playingCards.appearedCards.length) onFinish();
+        if (!playingCards.shownCards?.filter(item => item !== null).length && !!playingCards.appearedCards.length) onFinish();
     }, [playingCards, onFinish]);
 
     const handleClickResult = (e, id) => {
-        console.log(id);
         e.stopPropagation();
         setResultClicked(id);
     };
 
+    const handleRestart = useCallback(() => {
+        setIsTimeOut(false);
+
+        setPlayingCards({
+            shownCards: [],
+            appearedCards: [],
+            availableCards: []
+        });
+        
+    }, [setPlayingCards, setIsTimeOut]);
+
+    const handleTimeout = useCallback(() => {
+        setIsTimeOut(true);
+    }, [setIsTimeOut]);
+
+    const isStartTimer = useMemo(() => 
+        (!isRules && !resultClicked && props.isShownDarken && !isFinished && !isTimeOut), 
+        [isRules, resultClicked, props.isShownDarken, isFinished, isTimeOut]);
+
     return (
         <>
             <Wrapper>
-                <RulesHeaderStyled onClick={() => setIsRules(true)} $clicked={resultClicked} />
+                <RulesHeaderStyled 
+                    onClick={() => setIsRules(true)} 
+                    $clicked={resultClicked} 
+                    initialTime={props.initialTime} 
+                    isStart={isStartTimer}
+                    onFinish={handleTimeout}
+                    onRestart={handleRestart}
+                />
                 <ResultWrapper>
-                    {props.results?.map((result) => (
+                    {props.results?.map((result, i) => (
                         <ResultCard 
                             key={result.id} 
                             id={result.id}
@@ -265,7 +299,7 @@ export const MergeGame = (props) => {
                     )}
                 </ResultWrapper>
                 {resultClicked && <DarkenBg onClick={() => setResultClicked('')}/>}
-                <Cards cards={playingCards.shownCards} onDrop={handleDrop}/>
+                <Cards cards={playingCards.shownCards} onDrop={handleDrop} coordinates={resultCoordinates}/>
             </Wrapper>
             {(props.isShownDarken && !isRules && !resultClicked) && <DarkenBg />}
             {isRules && (

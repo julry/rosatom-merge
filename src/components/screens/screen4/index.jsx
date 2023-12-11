@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import {useProgress} from "../../../hooks/useProgress";
+import { openLink } from "../../../utils/openLink";
+import { VK_LINK } from "../../../constants";
 import { MergeGame } from "../../shared/merge-game";
 import { Block } from "../../shared/block";
 import { Title, Text } from "../../shared/texts";
@@ -28,6 +30,7 @@ const BlockStyled = styled(Block)`
 export const Screen4 = () => {
     const { next } = useProgress();
     const [isFinished, setIsFinished] = useState(false);
+    const [isStart, setIsStart] = useState(true);
 
     const handleNext = () => {
         next();
@@ -35,27 +38,51 @@ export const Screen4 = () => {
     
     return (
         <>
-            <MergeGame cards={cards} results={results} isShownDarken={!isFinished} onFinish={() => setIsFinished(true)} isSecond/>
-            {isFinished && (<FinishedWrapper>
-                <BlockStyled>
-                    <Title>Полпути пройдено!</Title>
-                    <Text>
-                        {
-                            'Вот он, настоящий дух молодости, — ' + 
-                            'на улице жаркое лето, вокруг друзья, а ты строишь будущее себе и поколениям вперёд! ' + 
-                            'Немного передохнули… продолжим строить?'
-                        }
-                    </Text>
-                    <ButtonStyled type="dark" bg="red" onClick={handleNext}>Продолжить</ButtonStyled>
-                    <Text>
-                        {
-                            'В конце стройки ты сможешь узнать все про стройотряды Росатома, ' + 
-                            'но если ты уже сейчас хочешь стать бойцом, переходи по ссылке:'
-                        }
-                    </Text>
-                    <ButtonStyled type="light" bg="green">В стройотряд</ButtonStyled>
-                </BlockStyled>
-            </FinishedWrapper>)}
+            <MergeGame 
+                cards={cards} 
+                results={results} 
+                isShownDarken={!isFinished && !isStart} 
+                onFinish={() => setIsFinished(true)} 
+                initialTime={60}
+                isSecond
+            />
+            {isStart && (
+                <FinishedWrapper>
+                    <BlockStyled>
+                        <Title>Чего-то не хватает!</Title>
+                        <Text>
+                            {
+                                'Росатом не только про АЭС, но и про создание инфраструктуры — центра ' +
+                                'обработки данных, медицинского центра и жилых корпусов — и даже про атомный ледокол! '+
+                                '\nДавай их тоже соберём!'
+                            }
+                        </Text>
+                        <ButtonStyled onClick={() => setIsStart(false)} bg="blue">Начать</ButtonStyled>
+                    </BlockStyled>
+                </FinishedWrapper>
+            )}
+            {isFinished && (
+                <FinishedWrapper>
+                    <BlockStyled>
+                        <Title>Полпути пройдено!</Title>
+                        <Text>
+                            {
+                                'Вот он, настоящий дух молодости, — ' + 
+                                'на улице жаркое лето, вокруг друзья, а ты строишь будущее себе и поколениям вперёд! ' + 
+                                'Немного передохнули… продолжим строить?'
+                            }
+                        </Text>
+                        <ButtonStyled type="dark" bg="red" onClick={handleNext}>Продолжить</ButtonStyled>
+                        <Text>
+                            {
+                                'В конце стройки ты сможешь узнать все про стройотряды Росатома, ' + 
+                                'но если ты уже сейчас хочешь стать бойцом, переходи по ссылке:'
+                            }
+                        </Text>
+                        <ButtonStyled type="light" bg="green" onClick={() => openLink(VK_LINK)}>В стройотряд</ButtonStyled>
+                    </BlockStyled>
+                </FinishedWrapper>
+            )}
         </>
     );
 };

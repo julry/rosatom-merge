@@ -111,6 +111,7 @@ export const results = [
         id: 'result_cod',
         src: cod,
         text: 'ЦОД',
+        type: 'number',
         amount: 1,
         info: {
             items: [
@@ -146,6 +147,7 @@ export const results = [
     }, {
         id: 'result_medicine',
         src: medicine,
+        type: 'mask',
         text: 'Мед.центр',
         amount: 1,
         info: {
@@ -181,6 +183,7 @@ export const results = [
         id: 'result_home',
         src: home,
         text: 'Жилой корпус',
+        type: 'board',
         amount: 2,
         info: {
             items: [
@@ -213,6 +216,7 @@ export const results = [
     {
         id: 'result_icebreaker',
         src: icebreaker,
+        type: 'ice',
         text: 'Ледокол',
         amount: 1,
         info: {

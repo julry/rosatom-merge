@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     grid-gap: var(--cellGap);
 `;
 
-export const CardsField = ({ cards, className, onDrop, isMini }) => {
+export const CardsField = ({ cards, className, onDrop, isMini, coordinates }) => {
     const HTML5toTouch = {
         backends: [
             {
@@ -42,6 +42,8 @@ export const CardsField = ({ cards, className, onDrop, isMini }) => {
                         isMini={isMini}
                         onDrop={onDrop} 
                         number={n}
+                        resultX={coordinates?.[card?.type]?.[0]}
+                        resultY={coordinates?.[card?.type]?.[1]}
                     />
                 ))}
             </Wrapper>

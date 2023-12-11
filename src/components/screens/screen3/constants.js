@@ -134,6 +134,7 @@ export const results = [
     {
         id: 'result_cooling',
         src: cooling,
+        type: 'water',
         text: 'Градирня',
         amount: 2,
         info: {
@@ -178,6 +179,7 @@ export const results = [
     {
         id: 'result_turboGen',
         src: turboGen,
+        type: 'rotor',
         text: 'Турбогенератор',
         amount: 2,
         info: {
@@ -215,6 +217,7 @@ export const results = [
     {
         id: 'result_reactBuild',
         src: reactBuild,
+        type: 'uranium',
         text: 'Здание реактора',
         amount: 2,
         info: {
@@ -268,6 +271,7 @@ export const results = [
     {
         id: 'result_transformer',
         src: transformer,
+        type: 'coil',
         text: 'Трансформатор',
         amount: 2,
         info: {

@@ -7,6 +7,7 @@ import { ContentWrapper } from "../shared/content-wrapper";
 import { DarkenBg } from "../shared/darken-bg";
 import { Rules1 } from "../shared/rules1";
 import { Title, Text } from "../shared/texts";
+import { Timer } from "../shared/timer";
 
 const BlockStyled = styled(Block)`
     margin-top: min(80px, 21vw);
@@ -24,6 +25,12 @@ const ElementStyled = styled.div`
     height: min(15.2vw, 57px); 
 `;
 
+const TimerStyled = styled(Timer)`
+    position: absolute;
+    top: var(--screen_padding);
+    left: var(--screen_padding);
+`;
+
 export const Screen2 = () => {
     const [isNext, setIsNext] = useState(false);
     const { next } = useProgress(); 
@@ -32,7 +39,10 @@ export const Screen2 = () => {
         <>
             <ContentWrapper>
                 {isNext ? (
-                    <Rules1 onClick={next}/>
+                    <>
+                        <TimerStyled initialTime={150} />
+                        <Rules1 onClick={next}/>
+                    </>
                 ) : (
                     <BlockStyled>
                         <Title>Привет, боец!</Title>
