@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useProgress } from "../../hooks/useProgress";
+import { reachMetrikaGoal } from "../../utils/reachMetrikaGoal";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
@@ -35,13 +36,18 @@ export const Screen2 = () => {
     const [isNext, setIsNext] = useState(false);
     const { next } = useProgress(); 
 
+    const handleNext = () => {
+        reachMetrikaGoal('firstGame');
+        next();
+    };
+
     return (
         <>
             <ContentWrapper>
                 {isNext ? (
                     <>
                         <TimerStyled initialTime={150} />
-                        <Rules1 onClick={next}/>
+                        <Rules1 onClick={handleNext}/>
                     </>
                 ) : (
                     <BlockStyled>

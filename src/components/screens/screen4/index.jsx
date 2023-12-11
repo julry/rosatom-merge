@@ -2,14 +2,15 @@ import { useState } from "react";
 import styled from "styled-components";
 import {useProgress} from "../../../hooks/useProgress";
 import { openLink } from "../../../utils/openLink";
+import { reachMetrikaGoal } from "../../../utils/reachMetrikaGoal";
 import { VK_LINK } from "../../../constants";
+import { Timer } from "../../shared/timer";
 import { MergeGame } from "../../shared/merge-game";
 import { Block } from "../../shared/block";
 import { Title, Text } from "../../shared/texts";
 import { DarkenBg } from "../../shared/darken-bg";
 import { Button } from "../../shared/button";
 import { results, cards } from './constants';
-import { Timer } from "../../shared/timer";
 
 const FinishedWrapper = styled(DarkenBg)`
     z-index: 10;
@@ -38,8 +39,19 @@ export const Screen4 = () => {
     const [isStart, setIsStart] = useState(true);
 
     const handleNext = () => {
+        reachMetrikaGoal('middle');
         next();
-    }
+    };
+
+    const handleStartGame = () => {
+        reachMetrikaGoal('secondGame');
+        setIsStart(false);
+    };
+
+    const handleOpenLink = () => {
+        reachMetrikaGoal('brigadeMiddle');
+        openLink(VK_LINK);
+    };
     
     return (
         <>
@@ -64,7 +76,7 @@ export const Screen4 = () => {
                             }
                                 Постарайся собрать всё <b>за 1 минуту</b>.
                         </Text>
-                        <ButtonStyled onClick={() => setIsStart(false)} bg="blue">Начать</ButtonStyled>
+                        <ButtonStyled onClick={handleStartGame} bg="blue">Начать</ButtonStyled>
                     </RulesBlock>
                 </FinishedWrapper>
             )}
@@ -86,7 +98,7 @@ export const Screen4 = () => {
                                 'но если ты уже сейчас хочешь стать бойцом, переходи по ссылке:'
                             }
                         </Text>
-                        <ButtonStyled type="dark" bg="red" onClick={() => openLink(VK_LINK)}>В стройотряд</ButtonStyled>
+                        <ButtonStyled type="dark" bg="red" onClick={handleOpenLink}>В стройотряд</ButtonStyled>
                     </BlockStyled>
                 </FinishedWrapper>
             )}

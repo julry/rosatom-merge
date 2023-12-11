@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import medal from "../../assets/images/medal.png";
 import { useProgress } from "../../hooks/useProgress";
+import { reachMetrikaGoal } from "../../utils/reachMetrikaGoal";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
@@ -25,6 +26,11 @@ const ButtonStyled = styled(Button)`
 export const Screen6 = () => {
     const { next } = useProgress(); 
 
+    const handleNext = () => {
+        reachMetrikaGoal('finish');
+        next();
+    };
+
     return (
         <>
             <ContentWrapper>
@@ -38,7 +44,7 @@ export const Screen6 = () => {
                         }
                     </Text>
                     <Medal />
-                    <ButtonStyled type="light" bg="green" onClick={next}>Получить</ButtonStyled>
+                    <ButtonStyled type="light" bg="green" onClick={handleNext}>Получить</ButtonStyled>
                 </BlockStyled>
             </ContentWrapper>
             <DarkenBg />

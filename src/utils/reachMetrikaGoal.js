@@ -1,0 +1,1 @@
+export const reachMetrikaGoal = (goalName) => console.log(window.ymId, 'reachGoal', goalName);

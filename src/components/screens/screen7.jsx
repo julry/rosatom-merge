@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { MAIN_LINK, VK_LINK } from "../../constants";
 import { openLink } from "../../utils/openLink";
+import { reachMetrikaGoal } from "../../utils/reachMetrikaGoal";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
@@ -20,6 +21,16 @@ const ButtonStyled = styled(Button)`
 `;
 
 export const Screen7 = () => {
+    const handleBrigade = () => {
+        reachMetrikaGoal('brigadeFinal');
+        openLink(VK_LINK);
+    };
+
+    const handleRosatom = () => {
+        reachMetrikaGoal('rosatomFinal');
+        openLink(MAIN_LINK);
+    };
+    
     return (
         <>
             <ContentWrapper>
@@ -30,13 +41,13 @@ export const Screen7 = () => {
                          'Узнай больше о стройотрядах на карьерном портале, подавай заявку на участие и стань частью истории.'
                         }
                     </Text>
-                    <ButtonStyled bg="red" onClick={() => openLink(VK_LINK)}>В стройотряд</ButtonStyled>
+                    <ButtonStyled bg="red" onClick={handleBrigade}>В стройотряд</ButtonStyled>
                     <Text> 
                         {
                          'А познакомиться и стать частью Росатома можно тут:'
                         }
                     </Text>
-                    <ButtonStyled bg="blue" onClick={() => openLink(MAIN_LINK)}>В Росатом</ButtonStyled>
+                    <ButtonStyled bg="blue" onClick={handleRosatom}>В Росатом</ButtonStyled>
                 </BlockStyled>
             </ContentWrapper>
             <DarkenBg />

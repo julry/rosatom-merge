@@ -18,6 +18,7 @@ import { useProgress } from '../../../hooks/useProgress';
 import { RulesHeader } from '../../shared/rules-header';
 import { Modal } from '../../shared/modal';
 import { initialResults } from './constants';
+import { reachMetrikaGoal } from '../../../utils/reachMetrikaGoal';
 
 const Wrapper = styled(ContentWrapper)`
     padding: var(--screen_padding) calc(var(--screen_padding) * 1.5);
@@ -106,6 +107,7 @@ export const Screen5 = () => {
     const [isTimeOut, setIsTimeOut] = useState(false);
 
     const $rulesRect = useRef();
+    const $isBroken = useRef();
 
     const objects = useMemo(() => [...results.row, ...results.column], [results]);
 
@@ -220,6 +222,11 @@ export const Screen5 = () => {
 
     const handleBrake = () => {
         setIsBreaking(true);
+        if (!$isBroken.current) {
+            $isBroken.current = true;
+            reachMetrikaGoal('mistake');
+        }
+    
         setTimeout(() => {
             setAdditional((prev) => ({...prev, shown: false}));
             setIsBreaking(false);
@@ -257,6 +264,16 @@ export const Screen5 = () => {
     const handleTimeout = useCallback(() => {
         setIsTimeOut(true);
     }, [setIsTimeOut]);
+
+    const handleCloseRules = () => {
+        if (isFirstRules) reachMetrikaGoal('thirdGame');
+        setIsRules(false);
+    };
+
+    const handleNext = () => {
+        reachMetrikaGoal('win3game');
+        next();
+    };
 
     const isStartTimer = useMemo(() => 
         (!isRules && !additional.shown && !isTimeOut && !isChecking), 
@@ -315,7 +332,7 @@ export const Screen5 = () => {
                     {additional.type === 'info' ? (
                         <SuccessModal>
                             <Text>{correctText}</Text>
-                            <ButtonRulesStyled bg="blue" onClick={next}>Далее</ButtonRulesStyled>
+                            <ButtonRulesStyled bg="blue" onClick={handleNext}>Далее</ButtonRulesStyled>
                         </SuccessModal>
                     ) : (
                         <Block>
@@ -335,18 +352,20 @@ export const Screen5 = () => {
                             Расположи всё в правильной комбинации <b>за 1,5 минуты</b>. 
                             Обрати внимание на <b>подсказки по краям</b>!
                         </Text> 
-                        <ButtonRulesStyled bg="blue" onClick={() => setIsRules(false)}>
+                        <ButtonRulesStyled bg="blue" onClick={handleCloseRules}>
                             {isFirstRules ? 'Начать' : 'Понятно'}
                         </ButtonRulesStyled>
                     </BlockStyled>
                     {isRules && (
-                    <RulesCell style={{
-                        top: $rulesRect?.current?.y, 
-                        left: $rulesRect?.current?.x,
-                        width: $rulesRect?.current?.width,
-                        height: $rulesRect?.current?.height,
-                    }}/>
-                )}
+                        <RulesCell 
+                            style={{
+                                top: $rulesRect?.current?.y, 
+                                left: $rulesRect?.current?.x,
+                                width: $rulesRect?.current?.width,
+                                height: $rulesRect?.current?.height,
+                            }}
+                        />
+                    )}
                 </Modal>
             )}
             </Wrapper>

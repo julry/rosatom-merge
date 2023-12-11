@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import btnElement from "../../assets/images/start-button-icon.svg";
 import { useProgress } from "../../hooks/useProgress";
+import { reachMetrikaGoal } from "../../utils/reachMetrikaGoal";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
@@ -23,6 +24,11 @@ const ButtonWrapper = styled(FlexWrapper)`
 
 export const Screen1 = () => {
     const { next } = useProgress(); 
+    
+    const handleNext = () => {
+        reachMetrikaGoal('start');
+        next();
+    };
 
     return (
         <>
@@ -36,7 +42,7 @@ export const Screen1 = () => {
                     </Text>
                 </BlockStyled>
                 <ButtonWrapper>
-                    <Button type="light" bg="green" onClick={next}>Играть</Button>
+                    <Button type="light" bg="green" onClick={handleNext}>Играть</Button>
                 </ButtonWrapper>
             </ContentWrapper>
             <DarkenBg />

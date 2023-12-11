@@ -5,16 +5,12 @@ import { cards, results } from "./constants";
 export const Screen3 = () => {
     const {next} = useProgress();
     
-    const handleNext = () => {
-        next();
-    };
-
     return (
         <MergeGame 
             cards={cards} 
             results={results} 
             isShownDarken
-            onFinish={handleNext}
+            onFinish={next}
             initialTime={150}
         />
     );
