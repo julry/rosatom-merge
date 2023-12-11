@@ -86,6 +86,12 @@ const SuccessModal = styled(Block)`
     margin-top: min(80px, 21vw);
 `;
 
+const RulesHeaderStyled = styled(RulesHeader)`
+    & div {
+        ${({$isFirstRules}) => $isFirstRules ? 'z-index: 40' : ''};
+    }
+`;
+
 export const Screen5 = () => {
     const { next } = useProgress();
     const $timeOut = useRef();
@@ -259,7 +265,8 @@ export const Screen5 = () => {
     return (
         <DndProvider options={HTML5toTouch}>
             <Wrapper>
-                <RulesHeader 
+                <RulesHeaderStyled
+                    $isFirstRules={isFirstRules} 
                     onClick={handleClickRules} 
                     initialTime={90} 
                     onRestart={handleRestart} 
