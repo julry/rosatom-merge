@@ -48,8 +48,8 @@ export const Screen7 = () => {
                         }
                     </Text>
                     <ButtonStyled bg="blue" onClick={handleRosatom}>В Росатом</ButtonStyled>
-                    <AddText>Реклама. ЧАСТНОЕ УЧРЕЖДЕНИЕ «ЦЕНТР КОММУНИКАЦИЙ». ИНН 9705152344</AddText>
                 </BlockStyled>
+                <AddText>Реклама. ЧАСТНОЕ УЧРЕЖДЕНИЕ «ЦЕНТР КОММУНИКАЦИЙ». ИНН 9705152344</AddText>
             </ContentWrapper>
             <DarkenBg />
         </>
