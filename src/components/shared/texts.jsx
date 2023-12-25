@@ -35,3 +35,20 @@ export const Text = styled.p`
         font-size: 13px;
     }
 `;
+
+export const AddText = styled.p`
+position: absolute;
+left: var(--screen_padding);
+bottom: min(5vw, 20px);
+z-index: 10;
+color: white;
+font-family: 'Inter', 'Rosatom', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+width: max-content;
+max-width: 100%;
+font-size: 8px;
+
+@media screen and (max-width: 320px) {
+    font-size: 6px;
+}
+`;

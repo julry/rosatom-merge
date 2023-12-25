@@ -7,7 +7,7 @@ import { VK_LINK } from "../../../constants";
 import { Timer } from "../../shared/timer";
 import { MergeGame } from "../../shared/merge-game";
 import { Block } from "../../shared/block";
-import { Title, Text } from "../../shared/texts";
+import { Title, Text, AddText } from "../../shared/texts";
 import { DarkenBg } from "../../shared/darken-bg";
 import { Button } from "../../shared/button";
 import { results, cards } from './constants';
@@ -50,7 +50,7 @@ export const Screen4 = () => {
 
     const handleOpenLink = () => {
         reachMetrikaGoal('brigadeMiddle');
-        openLink(VK_LINK);
+        openLink(`${VK_LINK}?erid=2VtzqvhNE4t`);
     };
     
     return (
@@ -100,6 +100,7 @@ export const Screen4 = () => {
                         </Text>
                         <ButtonStyled type="dark" bg="red" onClick={handleOpenLink}>В стройотряд</ButtonStyled>
                     </BlockStyled>
+                    <AddText>Реклама. ЧАСТНОЕ УЧРЕЖДЕНИЕ «ЦЕНТР КОММУНИКАЦИЙ». ИНН 9705152344</AddText>
                 </FinishedWrapper>
             )}
         </>

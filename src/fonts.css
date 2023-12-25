@@ -21,3 +21,11 @@
     font-weight: 400;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'Inter';
+    src: local('Inter'),
+    url('./assets/fonts/Inter/Inter-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}

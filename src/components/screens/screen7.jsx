@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { MAIN_LINK, VK_LINK } from "../../constants";
+import { VK_LINK } from "../../constants";
 import { openLink } from "../../utils/openLink";
 import { reachMetrikaGoal } from "../../utils/reachMetrikaGoal";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
 import { DarkenBg } from "../shared/darken-bg";
-import { Text } from "../shared/texts";
+import { AddText, Text } from "../shared/texts";
 
 const BlockStyled = styled(Block)`
     margin: min(80px, 21vw) 0 min(33px, 8.8vw);
@@ -23,12 +23,12 @@ const ButtonStyled = styled(Button)`
 export const Screen7 = () => {
     const handleBrigade = () => {
         reachMetrikaGoal('brigadeFinal');
-        openLink(VK_LINK);
+        openLink(`${VK_LINK}?erid=2VtzqwD1eDr `);
     };
 
     const handleRosatom = () => {
         reachMetrikaGoal('rosatomFinal');
-        openLink(MAIN_LINK);
+        openLink('https://rosatom-career.ru/?utm_source=ft&utm_medium=special&utm_campaign=hr23&utm_content=aes&erid=2VtzqwD1eDr');
     };
     
     return (
@@ -48,6 +48,7 @@ export const Screen7 = () => {
                         }
                     </Text>
                     <ButtonStyled bg="blue" onClick={handleRosatom}>В Росатом</ButtonStyled>
+                    <AddText>Реклама. ЧАСТНОЕ УЧРЕЖДЕНИЕ «ЦЕНТР КОММУНИКАЦИЙ». ИНН 9705152344</AddText>
                 </BlockStyled>
             </ContentWrapper>
             <DarkenBg />
