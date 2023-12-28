@@ -91,5 +91,5 @@ export const rulesCards2 = [
 export const MERGE_ANIMATION_DURATION = 400;
 export const COMPLETE_ANIMATION_DURATION = 600;
 
-export const VK_LINK = 'https://vk.com/co_rosatom/';
+export const VK_LINK = 'https://vk.com/app51794339';
 export const MAIN_LINK = 'https://rosatom-career.ru/?utm_source=ft&utm_medium=special&utm_campaign=hr23&utm_content=aes';

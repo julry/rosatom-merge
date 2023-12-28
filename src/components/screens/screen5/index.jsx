@@ -18,7 +18,6 @@ import { useProgress } from '../../../hooks/useProgress';
 import { RulesHeader } from '../../shared/rules-header';
 import { Modal } from '../../shared/modal';
 import { initialResults } from './constants';
-import { reachMetrikaGoal } from '../../../utils/reachMetrikaGoal';
 
 const Wrapper = styled(ContentWrapper)`
     padding: var(--screen_padding) calc(var(--screen_padding) * 1.5);
@@ -224,7 +223,6 @@ export const Screen5 = () => {
         setIsBreaking(true);
         if (!$isBroken.current) {
             $isBroken.current = true;
-            reachMetrikaGoal('mistake');
         }
     
         setTimeout(() => {
@@ -266,12 +264,10 @@ export const Screen5 = () => {
     }, [setIsTimeOut]);
 
     const handleCloseRules = () => {
-        if (isFirstRules) reachMetrikaGoal('thirdGame');
         setIsRules(false);
     };
 
     const handleNext = () => {
-        reachMetrikaGoal('win3game');
         next();
     };
 

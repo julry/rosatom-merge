@@ -2,7 +2,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import {useProgress} from "../../../hooks/useProgress";
 import { openLink } from "../../../utils/openLink";
-import { reachMetrikaGoal } from "../../../utils/reachMetrikaGoal";
 import { VK_LINK } from "../../../constants";
 import { Timer } from "../../shared/timer";
 import { MergeGame } from "../../shared/merge-game";
@@ -39,18 +38,15 @@ export const Screen4 = () => {
     const [isStart, setIsStart] = useState(true);
 
     const handleNext = () => {
-        reachMetrikaGoal('middle');
         next();
     };
 
     const handleStartGame = () => {
-        reachMetrikaGoal('secondGame');
         setIsStart(false);
     };
 
     const handleOpenLink = () => {
-        reachMetrikaGoal('brigadeMiddle');
-        openLink(`${VK_LINK}?erid=2VtzqvhNE4t`);
+        openLink(VK_LINK);
     };
     
     return (

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import medal from "../../assets/images/medal.png";
 import { useProgress } from "../../hooks/useProgress";
-import { reachMetrikaGoal } from "../../utils/reachMetrikaGoal";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
@@ -27,7 +26,6 @@ export const Screen6 = () => {
     const { next } = useProgress(); 
 
     const handleNext = () => {
-        reachMetrikaGoal('finish');
         next();
     };
 

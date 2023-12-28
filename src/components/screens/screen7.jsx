@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { VK_LINK } from "../../constants";
 import { openLink } from "../../utils/openLink";
-import { reachMetrikaGoal } from "../../utils/reachMetrikaGoal";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
@@ -22,12 +21,10 @@ const ButtonStyled = styled(Button)`
 
 export const Screen7 = () => {
     const handleBrigade = () => {
-        reachMetrikaGoal('brigadeFinal');
-        openLink(`${VK_LINK}?erid=2VtzqwD1eDr `);
+        openLink(VK_LINK);
     };
 
     const handleRosatom = () => {
-        reachMetrikaGoal('rosatomFinal');
         openLink('https://rosatom-career.ru/?utm_source=ft&utm_medium=special&utm_campaign=hr23&utm_content=aes&erid=2VtzqwD1eDr');
     };
     

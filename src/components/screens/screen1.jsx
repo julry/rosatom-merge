@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import btnElement from "../../assets/images/start-button-icon.svg";
 import { useProgress } from "../../hooks/useProgress";
-import { reachMetrikaGoal } from "../../utils/reachMetrikaGoal";
 import { Block } from "../shared/block";
 import { Button } from "../shared/button";
 import { ContentWrapper } from "../shared/content-wrapper";
@@ -26,7 +25,6 @@ export const Screen1 = () => {
     const { next } = useProgress(); 
     
     const handleNext = () => {
-        reachMetrikaGoal('start');
         next();
     };
 
